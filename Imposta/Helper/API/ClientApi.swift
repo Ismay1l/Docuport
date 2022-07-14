@@ -49,23 +49,53 @@ class ClientApi: NSObject {
         }
     }
     
-    func getClientByID(id: Int, success: @escaping(ClientDetail) -> Void, failure: @escaping() -> Void) {
+    func getClientByIDBusiness(id: Int, success: @escaping(ClientInfoUser1) -> Void, failure: @escaping() -> Void) {
         
         AF.sessionConfiguration.timeoutIntervalForRequest = 60
         AF.sessionConfiguration.timeoutIntervalForResource = 60
         
-        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/clients/\(id)",
-            method: .get,
-            headers: Header.shared.headerWithToken()).responseData { response in
-                guard let data = response.data else { return }
-                do {
-                    let client = try JSONDecoder().decode(ClientDetail.self, from: data)
-                    success(client)
-                    
-                } catch let err {
-                    print("error: \(err)")
-                    failure()
-                }
+        
+        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/business/\(id)",
+                   method: .get,
+                   headers: Header.shared.headerWithToken()).responseData { response in
+            print("responePPP: \(response)")
+            guard let data = response.data else {
+                print("no data fetched")
+                return
+            }
+            do {
+                let client = try JSONDecoder().decode(ClientInfoUser1.self, from: data)
+                success(client)
+                
+            } catch let err {
+                print("error: \(err)")
+                failure()
+            }
+        }
+        
+    }
+    
+    func getClientByIDPersonal(id: Int, success: @escaping(ClientInfoUser2) -> Void, failure: @escaping() -> Void) {
+        
+        AF.sessionConfiguration.timeoutIntervalForRequest = 60
+        AF.sessionConfiguration.timeoutIntervalForResource = 60
+        
+        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/personal/\(id)",
+                   method: .get,
+                   headers: Header.shared.headerWithToken()).responseData { response in
+            print("responePPP: \(response)")
+            guard let data = response.data else {
+                print("no data fetched")
+                return
+            }
+            do {
+                let client = try JSONDecoder().decode(ClientInfoUser2.self, from: data)
+                success(client)
+                
+            } catch let err {
+                print("error: \(err)")
+                failure()
+            }
         }
         
     }

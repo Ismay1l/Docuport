@@ -233,21 +233,41 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         SVProgressHUD.show()
-        ClientApi.shared.getClientByID(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
-            self.isFinish = false
-            guard let result = response.result else { return }
-            
-            if let VC = R.storyboard.advisor.clientInfoVC() {
-                VC.client = result
-                let showPopup = SBCardPopupViewController(contentViewController: VC)
-                showPopup.show(onViewController: self)
-            }
+        print("idWWW: \(arrClientNew[indexPath.row].id ?? 0)")
+//        arrClientNew[indexPath.row].clientType
+        if  arrClientNew[indexPath.row].clientType == 1 {
+            ClientApi.shared.getClientByIDBusiness(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
+                self.isFinish = false
+                guard let result = response as? ClientInfoUser1 else { return }
 
-            self.tableView.reloadData()
-            SVProgressHUD.dismiss()
-        }, failure: {
-            SVProgressHUD.dismiss()
-        })
+                if let VC = R.storyboard.advisor.clientInfoVC() {
+                    VC.client = result
+                    let showPopup = SBCardPopupViewController(contentViewController: VC)
+                    showPopup.show(onViewController: self)
+                }
+
+                self.tableView.reloadData()
+                SVProgressHUD.dismiss()
+            }, failure: {
+                SVProgressHUD.dismiss()
+            })
+        } else if arrClientNew[indexPath.row].clientType == 2 {
+            ClientApi.shared.getClientByIDPersonal(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
+                self.isFinish = false
+                guard let result = response as? ClientInfoUser2 else { return }
+                
+                if let VC = R.storyboard.advisor.clientInfoVC() {
+                    VC.client = result
+                    let showPopup = SBCardPopupViewController(contentViewController: VC)
+                    showPopup.show(onViewController: self)
+                }
+
+                self.tableView.reloadData()
+                SVProgressHUD.dismiss()
+            }, failure: {
+                SVProgressHUD.dismiss()
+            })
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

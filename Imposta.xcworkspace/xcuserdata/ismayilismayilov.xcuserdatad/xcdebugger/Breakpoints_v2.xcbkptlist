@@ -14,8 +14,8 @@
             filePath = "Imposta/Helper/API/ClientApi.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "205"
-            endingLineNumber = "205"
+            startingLineNumber = "235"
+            endingLineNumber = "235"
             landmarkName = "getClientServiceListNew(clientId:success:failure:)"
             landmarkType = "7">
          </BreakpointContent>

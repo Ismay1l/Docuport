@@ -335,4 +335,8 @@ extension AppApi {
                     success(data)
         }
     }
+    
+    func getClientInfo() {
+        
+    }
 }

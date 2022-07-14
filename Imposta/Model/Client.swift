@@ -127,3 +127,74 @@ struct Item: Codable {
     let services: [String]?
     let isActive: Bool?
 }
+
+// MARK: - ClientInfo
+struct ClientInfoUser1: Codable {
+    let id, clientType: Int?
+    let name: String?
+    let tradeName: String?
+    let taxpayerIdentificationNumber: String?
+    let website: String?
+    let emailAddress, phoneNumber: String?
+    let advisorUserID, ownerUserID: Int?
+    let ownerUser: String?
+    let hasProfilePicture: Bool?
+    let address: String?
+    let services: [ServiceUser1]?
+    let collaborators: [String]?
+
+    enum CodingKeys: String, CodingKey {
+        case id, clientType, name, tradeName, taxpayerIdentificationNumber, website, emailAddress, phoneNumber
+        case advisorUserID = "advisorUserId"
+        case ownerUserID = "ownerUserId"
+        case ownerUser, hasProfilePicture, address, services, collaborators
+    }
+}
+
+// MARK: - Service
+struct ServiceUser1: Codable {
+    let id, departmentID: Int?
+    let displayName, departmentDisplayName, color: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case departmentID = "departmentId"
+        case displayName, departmentDisplayName, color
+    }
+}
+
+// MARK: - ClientInfo
+struct ClientInfoUser2: Codable {
+    let id, clientType: Int?
+    let firstName, lastName, emailAddress, phoneNumber: String?
+    let advisorUserID: Int?
+    let socialSecurityNumber: String?
+    let birthDate: String?
+    let maritalStatus, ownerUserID: Int?
+    let ownerUser: String?
+    let hasProfilePicture: Bool?
+    let address: String?
+    let services: [ServiceUser2]?
+    let collaborators: [String]?
+    let spouseInfo: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, clientType, firstName, lastName, emailAddress, phoneNumber
+        case advisorUserID = "advisorUserId"
+        case socialSecurityNumber, birthDate, maritalStatus
+        case ownerUserID = "ownerUserId"
+        case ownerUser, hasProfilePicture, address, services, collaborators, spouseInfo
+    }
+}
+
+// MARK: - Service
+struct ServiceUser2: Codable {
+    let id, departmentID: Int?
+    let displayName, departmentDisplayName, color: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case departmentID = "departmentId"
+        case displayName, departmentDisplayName, color
+    }
+}
