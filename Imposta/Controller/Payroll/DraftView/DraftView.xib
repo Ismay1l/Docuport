@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DraftViewController" customModule="Docuport" customModuleProvider="target">
+            <connections>
+                <outlet property="popUpView" destination="QHd-Im-vKF" id="AeO-D6-WlX"/>
+                <outlet property="view" destination="iN0-l3-epB" id="PhB-h6-sUz"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gQW-5A-pSP" userLabel="BlurView" customClass="BlurView" customModule="Docuport" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QHd-Im-vKF" userLabel="PopupView">
+                            <rect key="frame" x="20" y="333" width="374" height="230"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="payroll_draft_ic" translatesAutoresizingMaskIntoConstraints="NO" id="2RZ-WE-SFA">
+                                    <rect key="frame" x="159" y="40" width="56" height="56"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="56" id="EDF-l9-b5f"/>
+                                        <constraint firstAttribute="width" constant="56" id="xYD-Da-kiT"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Draft was saved!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qet-kK-yZV">
+                                    <rect key="frame" x="117.5" y="120" width="139.5" height="21.5"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VjJ-jE-S8c" userLabel="DescriptionLabel">
+                                    <rect key="frame" x="82" y="146.5" width="210" height="41.5"/>
+                                    <string key="text">Form was successfully saved
+to drafts.</string>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="VjJ-jE-S8c" firstAttribute="centerX" secondItem="Qet-kK-yZV" secondAttribute="centerX" id="6Qr-fa-zRi"/>
+                                <constraint firstItem="2RZ-WE-SFA" firstAttribute="centerX" secondItem="QHd-Im-vKF" secondAttribute="centerX" id="CS9-8p-eSb"/>
+                                <constraint firstItem="2RZ-WE-SFA" firstAttribute="top" secondItem="QHd-Im-vKF" secondAttribute="top" constant="40" id="CVI-Lw-eR6"/>
+                                <constraint firstItem="VjJ-jE-S8c" firstAttribute="top" secondItem="Qet-kK-yZV" secondAttribute="bottom" constant="5" id="Fc3-ki-eFy"/>
+                                <constraint firstAttribute="height" constant="230" id="K6k-oy-dZH"/>
+                                <constraint firstItem="Qet-kK-yZV" firstAttribute="centerX" secondItem="2RZ-WE-SFA" secondAttribute="centerX" id="f72-r0-4Q4"/>
+                                <constraint firstItem="Qet-kK-yZV" firstAttribute="top" secondItem="2RZ-WE-SFA" secondAttribute="bottom" constant="24" id="w7o-pN-J2W"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="QHd-Im-vKF" firstAttribute="centerY" secondItem="gQW-5A-pSP" secondAttribute="centerY" id="FQo-nM-E6a"/>
+                        <constraint firstAttribute="trailing" secondItem="QHd-Im-vKF" secondAttribute="trailing" constant="20" id="mos-vB-ifr"/>
+                        <constraint firstItem="QHd-Im-vKF" firstAttribute="leading" secondItem="gQW-5A-pSP" secondAttribute="leading" constant="20" id="n1U-Dj-C8H"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="gQW-5A-pSP" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="Oyd-6v-f8r"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="gQW-5A-pSP" secondAttribute="trailing" id="icq-0P-HKF"/>
+                <constraint firstItem="gQW-5A-pSP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="ylv-Iu-hJe"/>
+                <constraint firstAttribute="top" secondItem="gQW-5A-pSP" secondAttribute="top" id="zjb-HJ-Zqr"/>
+            </constraints>
+            <point key="canvasLocation" x="-97" y="98"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="payroll_draft_ic" width="54" height="54"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

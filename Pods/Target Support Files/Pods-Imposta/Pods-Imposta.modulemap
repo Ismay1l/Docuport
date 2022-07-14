@@ -1,0 +1,6 @@
+framework module Pods_Imposta {
+  umbrella header "Pods-Imposta-umbrella.h"
+
+  export *
+  module * { export * }
+}

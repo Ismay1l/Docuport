@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CommentViewController" customModule="Docuport" customModuleProvider="target">
+            <connections>
+                <outlet property="commentTextField" destination="u4n-YK-dee" id="PTb-2C-5kn"/>
+                <outlet property="popupView" destination="nCx-88-gMk" id="waF-MX-97h"/>
+                <outlet property="view" destination="iN0-l3-epB" id="cT8-BX-ysR"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x4D-Dc-0iF" userLabel="BlurView" customClass="BlurView" customModule="Docuport" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCx-88-gMk" userLabel="PopupView">
+                            <rect key="frame" x="20" y="298" width="374" height="300"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="yMA-zB-K34" userLabel="MainStack">
+                                    <rect key="frame" x="24" y="24" width="326" height="163"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Comment" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="icd-AE-FTR" userLabel="CommentLabel">
+                                            <rect key="frame" x="0.0" y="0.0" width="326" height="21"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="u4n-YK-dee" userLabel="CommentTextField">
+                                            <rect key="frame" x="0.0" y="33" width="326" height="42"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="42" id="jW5-3T-po1"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textField>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="5" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RrJ-QG-XPP" userLabel="DescriptionLabel">
+                                            <rect key="frame" x="0.0" y="87" width="326" height="76"/>
+                                            <string key="text">*Once submitted, you will not be able to make any changes to the current form. Submit if you want to send the final information to the Payroll Team. Cancel if you need to edit further.</string>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="16"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillProportionally" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Bmz-ft-S4H" userLabel="ButtonStack">
+                                    <rect key="frame" x="125.5" y="221" width="224.5" height="49"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pWh-rp-Iaz" userLabel="Cancel" customClass="PayrollCommentButton" customModule="Docuport" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="120" height="49"/>
+                                            <state key="normal" title="Cancel">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="onCancelTap:" destination="-1" eventType="touchUpInside" id="tCX-eg-jC2"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f6C-as-5Sb" userLabel="Save" customClass="PayrollCommentButton" customModule="Docuport" customModuleProvider="target">
+                                            <rect key="frame" x="130" y="0.0" width="94.5" height="49"/>
+                                            <state key="normal" title="Save">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="onSaveTap:" destination="-1" eventType="touchUpInside" id="fOj-GH-NUk"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" red="0.0" green="0.57647058823529407" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstItem="yMA-zB-K34" firstAttribute="leading" secondItem="nCx-88-gMk" secondAttribute="leading" constant="24" id="G7a-OD-LPL"/>
+                                <constraint firstAttribute="trailing" secondItem="Bmz-ft-S4H" secondAttribute="trailing" constant="24" id="O4m-2h-4ey"/>
+                                <constraint firstAttribute="bottom" secondItem="Bmz-ft-S4H" secondAttribute="bottom" constant="30" id="XdN-Lx-NJQ"/>
+                                <constraint firstAttribute="trailing" secondItem="yMA-zB-K34" secondAttribute="trailing" constant="24" id="ZWo-Js-1II"/>
+                                <constraint firstAttribute="height" constant="300" id="axi-Pk-1ME"/>
+                                <constraint firstItem="yMA-zB-K34" firstAttribute="top" secondItem="nCx-88-gMk" secondAttribute="top" constant="24" id="d3Q-n1-Fpa"/>
+                                <constraint firstItem="Bmz-ft-S4H" firstAttribute="top" secondItem="yMA-zB-K34" secondAttribute="bottom" constant="34" id="jgv-Bc-CTD"/>
+                                <constraint firstItem="Bmz-ft-S4H" firstAttribute="width" secondItem="nCx-88-gMk" secondAttribute="width" multiplier="0.6" id="rkv-V7-Xmq"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="nCx-88-gMk" firstAttribute="leading" secondItem="x4D-Dc-0iF" secondAttribute="leading" constant="20" id="4be-kC-Tnw"/>
+                        <constraint firstItem="nCx-88-gMk" firstAttribute="centerY" secondItem="x4D-Dc-0iF" secondAttribute="centerY" id="gUL-rI-QeF"/>
+                        <constraint firstAttribute="trailing" secondItem="nCx-88-gMk" secondAttribute="trailing" constant="20" id="hGo-4p-zWk"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="x4D-Dc-0iF" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="ENY-xU-YWD"/>
+                <constraint firstItem="x4D-Dc-0iF" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Va3-FL-Xi1"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="x4D-Dc-0iF" secondAttribute="trailing" id="ibJ-UU-ZJQ"/>
+                <constraint firstAttribute="top" secondItem="x4D-Dc-0iF" secondAttribute="top" id="tgA-Ho-ZsK"/>
+            </constraints>
+            <point key="canvasLocation" x="-294.20289855072468" y="97.767857142857139"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="f6C-as-5Sb">
+            <size key="intrinsicContentSize" width="39" height="34"/>
+        </designable>
+        <designable name="pWh-rp-Iaz">
+            <size key="intrinsicContentSize" width="56" height="34"/>
+        </designable>
+    </designables>
+</document>

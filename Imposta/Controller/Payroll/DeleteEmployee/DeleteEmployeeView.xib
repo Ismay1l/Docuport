@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="DeleteEmployeeViewController" customModule="Docuport" customModuleProvider="target">
+            <connections>
+                <outlet property="cancelButton" destination="0Vv-1H-UgH" id="tUb-8j-oSw"/>
+                <outlet property="deleteButton" destination="At5-9W-AQM" id="AA9-vc-4EU"/>
+                <outlet property="popupView" destination="swn-0w-Syi" id="N97-KC-ZhF"/>
+                <outlet property="view" destination="iN0-l3-epB" id="WzL-p5-vmB"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xuQ-Q3-r7b" userLabel="BlurView" customClass="BlurView" customModule="Docuport" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="swn-0w-Syi" userLabel="PopupView">
+                            <rect key="frame" x="20" y="298" width="374" height="300"/>
+                            <subviews>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="payroll_delete_ic" translatesAutoresizingMaskIntoConstraints="NO" id="npS-2I-U1Y">
+                                    <rect key="frame" x="159" y="40" width="56" height="56"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="56" id="Zip-xP-PWO"/>
+                                        <constraint firstAttribute="height" constant="56" id="dSH-Vb-Lsm"/>
+                                    </constraints>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xC2-qh-0JA">
+                                    <rect key="frame" x="130" y="120" width="114.5" height="21.5"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Clz-qW-VDd" userLabel="DescriptionLabel">
+                                    <rect key="frame" x="70.5" y="146.5" width="233" height="41.5"/>
+                                    <string key="text">Are you sure you want to delete 
+the current employee?</string>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-UltraLight" family="Helvetica Neue" pointSize="18"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="nzZ-dz-KQW" userLabel="ButtonStack">
+                                    <rect key="frame" x="75" y="214" width="224" height="42"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Vv-1H-UgH" userLabel="Cancel" customClass="PayrollDeleteButton" customModule="Docuport" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="107" height="42"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="42" id="rdA-tg-pwm"/>
+                                            </constraints>
+                                            <state key="normal" title="Cancel">
+                                                <color key="titleColor" red="0.98823529409999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <state key="selected">
+                                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.9882352941176471" green="0.30980392156862746" blue="0.30980392156862746" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="onCancelTap:" destination="-1" eventType="touchUpInside" id="y8G-dg-gUe"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="At5-9W-AQM" customClass="PayrollDeleteButton" customModule="Docuport" customModuleProvider="target">
+                                            <rect key="frame" x="117" y="0.0" width="107" height="42"/>
+                                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="42" id="TvE-nN-AbP"/>
+                                            </constraints>
+                                            <state key="normal" title="Delete">
+                                                <color key="titleColor" red="0.98823529409999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <state key="selected">
+                                                <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="10"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.98823529409999999" green="0.30980392159999998" blue="0.30980392159999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="onDeleteTap:" destination="-1" eventType="touchUpInside" id="861-Q0-sg7"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstItem="xC2-qh-0JA" firstAttribute="centerX" secondItem="npS-2I-U1Y" secondAttribute="centerX" id="57k-wd-wuX"/>
+                                <constraint firstItem="xC2-qh-0JA" firstAttribute="top" secondItem="npS-2I-U1Y" secondAttribute="bottom" constant="24" id="9Eb-KV-iM0"/>
+                                <constraint firstAttribute="height" constant="300" id="FUP-ca-4Lm"/>
+                                <constraint firstItem="npS-2I-U1Y" firstAttribute="centerX" secondItem="swn-0w-Syi" secondAttribute="centerX" id="Jxt-cd-jfh"/>
+                                <constraint firstItem="Clz-qW-VDd" firstAttribute="centerX" secondItem="xC2-qh-0JA" secondAttribute="centerX" id="LtM-z9-Cts"/>
+                                <constraint firstItem="nzZ-dz-KQW" firstAttribute="centerX" secondItem="Clz-qW-VDd" secondAttribute="centerX" id="TGT-wQ-dGl"/>
+                                <constraint firstItem="nzZ-dz-KQW" firstAttribute="width" secondItem="swn-0w-Syi" secondAttribute="width" multiplier="0.6" id="YIc-HX-ggi"/>
+                                <constraint firstItem="nzZ-dz-KQW" firstAttribute="top" secondItem="Clz-qW-VDd" secondAttribute="bottom" constant="26" id="Zky-fb-prD"/>
+                                <constraint firstItem="npS-2I-U1Y" firstAttribute="top" secondItem="swn-0w-Syi" secondAttribute="top" constant="40" id="cOL-31-enq"/>
+                                <constraint firstItem="Clz-qW-VDd" firstAttribute="top" secondItem="xC2-qh-0JA" secondAttribute="bottom" constant="5" id="ugb-Qr-NRa"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="swn-0w-Syi" firstAttribute="leading" secondItem="xuQ-Q3-r7b" secondAttribute="leading" constant="20" symbolic="YES" id="4En-mR-afA"/>
+                        <constraint firstItem="swn-0w-Syi" firstAttribute="centerY" secondItem="xuQ-Q3-r7b" secondAttribute="centerY" id="5J4-E1-J6s"/>
+                        <constraint firstAttribute="trailing" secondItem="swn-0w-Syi" secondAttribute="trailing" constant="20" id="c1T-jM-RHp"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xuQ-Q3-r7b" secondAttribute="trailing" id="6Vh-H3-OjT"/>
+                <constraint firstItem="xuQ-Q3-r7b" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="GNW-Sg-ZZ2"/>
+                <constraint firstItem="xuQ-Q3-r7b" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="HET-c7-zf4"/>
+                <constraint firstItem="xuQ-Q3-r7b" firstAttribute="bottom" secondItem="iN0-l3-epB" secondAttribute="bottom" id="gs8-E7-QhN"/>
+            </constraints>
+            <point key="canvasLocation" x="-272.46376811594206" y="124.55357142857142"/>
+        </view>
+    </objects>
+    <designables>
+        <designable name="0Vv-1H-UgH">
+            <size key="intrinsicContentSize" width="56" height="34"/>
+        </designable>
+        <designable name="At5-9W-AQM">
+            <size key="intrinsicContentSize" width="52" height="34"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="payroll_delete_ic" width="54" height="54"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,10 @@
+{
+    "updates": {
+        "check-for": "manually",
+        "notify": "always",
+        "app-store-id": "1548095813",
+        "comparing": "major-versions",
+        "min-os-required": "11.0.0",
+        "version": "2.2.6"
+     }
+}
