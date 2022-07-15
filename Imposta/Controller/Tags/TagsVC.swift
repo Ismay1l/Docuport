@@ -33,7 +33,7 @@ class TagsVC: UIViewController {
         pageTitleLbl.text = pageTitle
       
         setLogout(view: logoutIcon)
-//        setupInteractions()
+        setupInteractions()
         
         print("clientType: \(GetUserType.user.isUserClient())")
         print(UserType.client.rawValue)

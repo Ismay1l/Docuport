@@ -25,7 +25,7 @@ class AccountsVC: UIViewController, SBCardPopupContent {
     
     var delegate: SelectAccount? = nil
     
-    var arrUser = [ResultClients]()
+//    var arrUser = [ResultClients]()
     var arrUserNew = [AccountOnHeaderElement]()
     
     override func viewDidLoad() {
@@ -62,15 +62,15 @@ extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
         guard let userId = arrUserNew[indexPath.item].id else { return }
         UserDefaultsHelper.shared.setClientID(id: userId)
         
-        if let advisor = arrUser[indexPath.row].advisor {
+        if let advisor = arrUserNew[indexPath.row].advisor {
             UserDefaults.setAccountInfo(advisor)
         }
         
-        switch arrUser[indexPath.item].clientType {
-        case ClientType.Business.rawValue:
-            UserDefaultsHelper.shared.setClientName(name: arrUser[indexPath.item].name ?? "")
-        case ClientType.Personal.rawValue:
-            UserDefaultsHelper.shared.setClientName(name: arrUser[indexPath.item].fullClientName ?? "")
+        switch arrUserNew[indexPath.item].clientType {
+        case 1:
+            UserDefaultsHelper.shared.setClientName(name: arrUserNew[indexPath.item].name ?? "")
+        case 2:
+            UserDefaultsHelper.shared.setClientName(name: arrUserNew[indexPath.item].name ?? "")
         default:
             break
         }

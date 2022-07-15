@@ -133,16 +133,16 @@ extension AppApi {
     
     func forgotPassword(email: String, success: @escaping() -> Void, failure: @escaping (String) -> Void) {
         let params =  ["emailAddress": email]
-        let header: HTTPHeaders = ["Authorization" : "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiIyNTIiLCJleHAiOjE2NTY1MDUxNzB9.a4elZ-3TJ7goM9qIagC2W63pW2qg_0B3jXLTLpL8mbjYMloJVFHzcorolHCuiAXNL9iOHav6JawHJ8BfAs6pfZIpnechNcRaeLQ6gIe7zicN7ReYd3BKAbbHXA4lm3xj7be380n9zxCmczqROPs5Vz9lfU3pfwf8SemtBxxV4ozVzeaTM1lYkdTN0FLY_AoaioUREYCbZ7Kn5eSOgdPyM-7IyzJoWmmiFfPsqqOPwCyPS2aXJ7JzoQYlnvlzdVV9ZC91g9k7sR78Gt9mSUZ7hrRte34FORaBcyThCEdm46YmDf35WDHIJJ42BjdyG3UAJmvShn-2XrbKPuaRK8B6Fg"]
+        let innerheader = self.header
         do {
             let data = try JSONEncoder().encode(params)
             guard let parameters = try JSONSerialization.jsonObject(with: data, options: []) as? Parameters else { fatalError() }
             
-            AF.request("https://dev.docuport.app/api/v1/identity/account/send-reset-password-email",
+            AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/identity/account/send-reset-password-email",
                 method: .post,
                 parameters: parameters,
                 encoding: JSONEncoding.default,
-                headers: header)
+                headers: innerheader)
             .responseData { response in
                     guard let data = response.data else { return }
                 print("data forgot pass: \(data)")

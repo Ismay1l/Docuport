@@ -77,7 +77,7 @@ class ProfileVC: UIViewController {
 
         
         extentionLbl.text = ""
-        roleLbl.text = ""
+        roleLbl.isHidden = true
         inviterLbl.text = ""
         
         if GetUserType.user.isUserClient() {
@@ -88,10 +88,10 @@ class ProfileVC: UIViewController {
         
         setupLogo()
         self.inviterView.hideVerticalView()
-//        self.roleView.hideVerticalView()
+        self.roleView.hideVerticalView()
         self.extentionView.hideVerticalView()
 
-//        getUserProfile()
+        getUserProfile()
         user = AuthUser()
         
     }
@@ -106,7 +106,7 @@ class ProfileVC: UIViewController {
         AppApi.shared.getUserProfile(success: {
             response in
             
-            self.roleLbl.text = response.result?.role
+//            self.roleLbl.text = response.result?.role
             self.emailLbl.text = response.result?.emailAddress
             self.phoneNumberLbl.text = response.result?.phoneNumber
             self.surNameLbl.text = response.result?.lastName
@@ -212,6 +212,7 @@ extension ProfileVC {
     func getProfilePicture() {
         ProfileApi.shared.getProfilePicture { string in
             self.profilePhotoIV.image = UIImage.init(data: string)
+            self.profilePhotoIV.contentMode = .scaleToFill
         }
     }
 }

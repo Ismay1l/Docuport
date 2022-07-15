@@ -110,7 +110,7 @@ extension ProfileApi {
                 do {
     //                let decoder = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
                     let decoder = try JSONDecoder().decode(SendInvitationResponse.self, from: data)
-    //                print("jsonSerialization: \(decoder)")
+                    print("jsonSerialization: \(decoder)")
                     success(decoder)
                 } catch {
                     failure("error occured during decoding in SendInvitation")
@@ -204,7 +204,7 @@ extension ProfileApi {
                    method: .get,
                    encoding: JSONEncoding.default,
                    headers: innerHeader).responseData { response in
-            print("data picture: \(response.data)")
+//            print("data picture: \(response.data)")
             guard let data = response.data else { return }
             completion(data)
         }
