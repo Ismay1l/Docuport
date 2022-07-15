@@ -32,7 +32,7 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
         super.viewDidLoad()
         wrapperViewHeight.constant = self.view.frame.size.height
         
-        if UserDefaultsHelper.shared.getUserType() == UserType.Employee.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.employee.rawValue {
             editButton.isHidden = true
         }
         bindModel()

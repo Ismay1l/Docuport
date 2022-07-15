@@ -114,7 +114,7 @@ class DocumentUploadShareVC: UIViewController {
             self.documentId = response.result?.id
             DocumentSingleton.shared.docID = response.result?.id
             
-            if UserDefaultsHelper.shared.getUserType() == UserType.Advisor.rawValue || UserDefaultsHelper.shared.getUserType() == UserType.Employee.rawValue {
+            if UserDefaultsHelper.shared.getUserType() == UserType.advisor.rawValue || UserDefaultsHelper.shared.getUserType() == UserType.employee.rawValue {
                 self.lblService.isHidden = true
 //                self.alertWithHandler(title: "File has uploaded successfully", message: "", actionButton: "OK") {}
                 DispatchQueue.main.async {

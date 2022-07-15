@@ -26,9 +26,9 @@ enum ClientType: String {
 }
 
 enum UserType: String {
-    case Advisor
-    case Client
-    case Employee
+    case advisor
+    case client
+    case employee
 }
 
 enum SerachType {
@@ -94,21 +94,21 @@ struct GetUserType {
     static let user = GetUserType()
     
     func isUserAdvisor() -> Bool {
-        if UserDefaultsHelper.shared.getUserType() == UserType.Advisor.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.advisor.rawValue {
             return true
         }
         return false
     }
     
     func isUserClient() -> Bool {
-        if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
             return true
         }
         return false
     }
     
     func isUseEmployeeAdvisor() -> Bool {
-        if UserDefaultsHelper.shared.getUserType() == UserType.Employee.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.employee.rawValue {
             return true
         }
         return false

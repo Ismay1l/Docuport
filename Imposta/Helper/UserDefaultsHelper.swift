@@ -49,7 +49,7 @@ class UserDefaultsHelper: NSObject {
     }
     
     //USER TYPE
-    func setUserType(user: [String]) {
+    func setUserType(user: String) {
         userDefaults?.set(user, forKey: "userType")
     }
     

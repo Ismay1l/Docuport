@@ -122,7 +122,7 @@ extension UIViewController {
                     try! data.write(to: path, options: .atomic)
                     
                     let appDelegate = AppDelegate()
-                    if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+                    if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                         appDelegate.saveFile(type: .outbox, document: file, path: path.path)
                     } else {
                         appDelegate.saveFile(type: .inbox, document: file, path: path.path)

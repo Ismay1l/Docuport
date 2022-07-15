@@ -185,7 +185,7 @@ class ClientNewVC: UIViewController {
             UIView.animate(withDuration: 0.3, delay: 3.0, options: [], animations: {
                 self.alertView.alpha = 0
                 self.addButtonView.isHidden = false
-                self.emailTF.text = "hello"
+                self.emailTF.text = ""
                 self.emailTF.textColor = UIColor.init(hexString: "#292929")
             })
         }, completion: {

@@ -159,7 +159,8 @@ extension ProfileApi {
                     if auth.resultType == 1 {
                         UserDefaultsHelper.shared.setClientID(id: auth.user?.id ?? 0)
                         UserDefaultsHelper.shared.setUserEmail(email: usernameOrEmail, password: password)
-                        UserDefaultsHelper.shared.setUserType(user: auth.user?.roles ?? [""])
+                        UserDefaultsHelper.shared.setUserType(user: auth.user?.roles?.first ?? "")
+                        print("UserType: \(UserDefaultsHelper.shared.getUserType())")
                         UserDefaultsHelper.shared.setToken(token: auth.user?.jwtToken?.accessToken ?? "")
     //                        UserDefaultsHelper.shared.setUserProfileImageUrl(url: auth.user?.profilePictureUrl ?? "")
                         UserDefaultsHelper.shared.setAuthToken(token: auth.user?.jwtToken?.refreshToken ?? "")
@@ -186,7 +187,7 @@ extension ProfileApi {
                                headers: innerHeader)
                     .responseData { response in
                             guard let data = response.data else {
-                                print("data is nil")
+                                print("açaşsahib91@gmailş")
                                 return
                             }
                     }

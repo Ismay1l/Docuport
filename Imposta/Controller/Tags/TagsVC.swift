@@ -33,13 +33,25 @@ class TagsVC: UIViewController {
         pageTitleLbl.text = pageTitle
       
         setLogout(view: logoutIcon)
-        setupInteractions()
+//        setupInteractions()
         
+        print("clientType: \(GetUserType.user.isUserClient())")
+        print(UserType.client.rawValue)
     
         
-//        if GetUserType.user.isUserClient() {
+        if GetUserType.user.isUserClient() {
+            print("clientType: \(GetUserType.user.isUserClient())")
+            getTagsInfo()
+            clientView.isHidden = false
+        } else {
+            print("clientType: \(GetUserType.user.isUserClient())")
+            clientView.isHidden = true
+            getTagsInfo()
+        }
 //            advisorView.isHidden = true
-            getTagsForClientNew()
+//        getTagsInfo()
+//        clientView.isHidden = true
+//        advisorView.isHidden = false
 //        } else {
 //            clientView.isHidden = true
 //            getTagsForAdvisors()
@@ -59,7 +71,7 @@ class TagsVC: UIViewController {
 }
 
 extension TagsVC {
-    func getTagsForClientNew() {
+    func getTagsInfo() {
         guard let id = serviceId else {
             print("couldnt take id")
             return }

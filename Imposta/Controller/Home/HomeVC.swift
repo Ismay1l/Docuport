@@ -108,7 +108,7 @@ extension HomeVC {
         servicesList.removeAll()
         print(GetUserType.user.isUserClient())
         print("userType: \(UserDefaultsHelper.shared.getUserType())")
-        if UserType.Client.rawValue == UserDefaultsHelper.shared.getUserType() {
+        if UserType.client.rawValue == UserDefaultsHelper.shared.getUserType() {
             ClientApi.shared.getClientServiceListNew(clientId: "\(UserDefaultsHelper.shared.getClientID())") { response in
                 if let result = response as? [ClientServices] {
                     print(result)
@@ -270,15 +270,15 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        if indexPath.row == servicesListNew.count {
-//            onDocuments(service: servicesListNew[indexPath.row])
-//        } else {
-//            onTags(index: indexPath.row)
-//        }
+        if indexPath.row == servicesListNew.count-1 {
+            onDocuments(service: servicesListNew[indexPath.row])
+        } else {
+            onTags(index: indexPath.row)
+        }
 //        if indexPath.row == self.servicesListNew.count - 1 {
 //            myUploads()
 //        } else {
-            onDocuments(service: self.servicesListNew[indexPath.row])
+//            onDocuments(service: self.servicesListNew[indexPath.row])
 //        }
     }
     

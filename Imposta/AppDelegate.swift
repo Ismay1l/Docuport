@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         if UserDefaultsHelper.shared.getToken() != "" {
-            if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+            if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                 setClientRoot()
             } else {
                 setAdvisorRoot()

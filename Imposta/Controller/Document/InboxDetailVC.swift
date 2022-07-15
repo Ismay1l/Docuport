@@ -87,7 +87,7 @@ class InboxDetailVC: UIViewController {
                 try! data.write(to: path, options: .atomic)
                 
                 let appDelegate = AppDelegate()
-                if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+                if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                     appDelegate.saveFile(type: .outbox, document: self.document!, path: path.path)
                 } else {
                     appDelegate.saveFile(type: .inbox, document: self.document!, path: path.path)

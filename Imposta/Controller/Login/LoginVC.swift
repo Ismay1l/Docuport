@@ -45,7 +45,7 @@ class LoginVC: UIViewController {
         if txtFieldEmail.text?.count != 0 && txtFieldPassword.text?.count != 0 {
             SVProgressHUD.show()
             ProfileApi.shared.loginProfile(tenancyName: "", usernameOrEmail: txtFieldEmail.text!, password: txtFieldPassword.text!, success: { response in
-                if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+                if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                     SVProgressHUD.show()
                     
                     AppApi.shared.getAllAccountNew { response in

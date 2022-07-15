@@ -80,7 +80,7 @@ class DocumentsOldVC: UIViewController {
     
     @objc func openDocSearch() {
         let vc = getVC(id: "DocumentSearchVC") as! DocumentSearchVC
-        if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
             vc.isClient = true
         }
         customPresentViewController(presenter, viewController: vc, animated: true)
@@ -241,7 +241,7 @@ extension DocumentsOldVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
             if segment.selectedSegmentIndex == 0 {
                 let vc = getVC(id: "OutboxDetailVC") as! OutboxDetailVC
                 vc.isClient = true
