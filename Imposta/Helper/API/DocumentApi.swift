@@ -48,7 +48,7 @@ class DocumentApi: NSObject {
             params.updateValue(tagId, forKey: "tagId")
         }
         
-        if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+        if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
             params.updateValue(UserDefaultsHelper.shared.getClientID(), forKey: "clientId")
         }
         
@@ -404,7 +404,7 @@ class DocumentApi: NSObject {
         let params: Parameters = ["ClientId": UserDefaultsHelper.shared.getClientID()]
         
         AF.upload(multipartFormData: { multipartFormData in
-            if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+            if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                 for (key, value) in params {
                     multipartFormData.append("\(value)".data(using: .utf8)!, withName: key)
                 }

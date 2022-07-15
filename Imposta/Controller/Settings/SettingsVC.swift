@@ -52,6 +52,7 @@ class SettingsVC: UIViewController {
             
             AppApi.shared.getAllAccountNew { response in
                 if let clients = response as? [AccountOnHeaderElement] {
+                    print("accounts on header: \(clients)")
                     VC.arrUserNew = clients
                     VC.delegate = self
                     let showPopup = SBCardPopupViewController(contentViewController: VC)

@@ -57,7 +57,7 @@ class DocumentSearchVC: UIViewController {
         addTapGesture()
         
         switch UserDefaultsHelper.shared.getUserType() {
-        case UserType.Advisor.rawValue, UserType.Employee.rawValue:
+        case UserType.advisor.rawValue, UserType.employee.rawValue:
             getClientList()
             
             if documentType == .inbox {
@@ -72,7 +72,7 @@ class DocumentSearchVC: UIViewController {
             clientView.isHidden = false
             clientViewHeightConstraint.constant = 40
             
-        case UserType.Client.rawValue:
+        case UserType.client.rawValue:
             isClient = true
             if documentType == .inbox {
                 viewRelatedDocs.isHidden = false

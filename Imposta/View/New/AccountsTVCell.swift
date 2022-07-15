@@ -25,18 +25,20 @@ class AccountsTVCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func reloadCell(user: ResultClients) {
+    func reloadCell(user: AccountOnHeaderElement) {
         if UserDefaultsHelper.shared.getClientID() == user.id {
             userPhotoImageView.borderColor = UIColor.init(hexString: "#0093FF")
             checkImageView.isHidden = false
             
             switch user.clientType {
-            case ClientType.Business.rawValue:
+            case 1:
                 userNameLbl.text = user.name
-                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_business_selected"))
-            case ClientType.Personal.rawValue:
-                userNameLbl.text = user.fullClientName
-                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_personal_selected"))
+//                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_business_selected"))
+                userPhotoImageView.image = UIImage(named: "account_business_selected")
+            case 2:
+                userNameLbl.text = user.name
+//                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_personal_selected"))
+                userPhotoImageView.image = UIImage(named: "account_personal_selected")
             default:
                 break
             }
@@ -46,12 +48,14 @@ class AccountsTVCell: UITableViewCell {
             
             
             switch user.clientType {
-            case ClientType.Business.rawValue:
+            case 1:
                 userNameLbl.text = user.name
-                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_business"))
-            case ClientType.Personal.rawValue:
-                userNameLbl.text = user.fullClientName
-                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_personal"))
+//                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_business"))
+                userPhotoImageView.image = UIImage(named: "account_business")
+            case 2:
+                userNameLbl.text = user.name
+//                userPhotoImageView.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "account_personal"))
+                userPhotoImageView.image = UIImage(named: "account_personal")
             default:
                 break
             }

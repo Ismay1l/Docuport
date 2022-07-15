@@ -104,7 +104,7 @@ class DocumentUploadVC: UIViewController {
             self.documentId = response.result?.id
             DocumentSingleton.shared.docID = response.result?.id
             print("DocumentSingleton.shared.docID \(DocumentSingleton.shared.docID)")
-            if UserDefaultsHelper.shared.getUserType() == UserType.Advisor.rawValue || UserDefaultsHelper.shared.getUserType() == UserType.Employee.rawValue {
+            if UserDefaultsHelper.shared.getUserType() == UserType.advisor.rawValue || UserDefaultsHelper.shared.getUserType() == UserType.employee.rawValue {
                 if let VC = R.storyboard.advisor.uploadWrapperVC() {
                     VC.modalPresentationStyle = .fullScreen
                     self.present(VC, animated: true)

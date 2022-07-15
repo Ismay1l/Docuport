@@ -225,7 +225,7 @@ class ClientApi: NSObject {
     }
     
     func getClientServiceListNew(clientId: String, success: @escaping([ClientServices])->Void, failure: @escaping()->Void) {
-        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/80/services?includeIcons=true",
+        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/\(clientId)/services?includeIcons=true",
             method: .get,
             headers: Header.shared.headerWithToken()).responseData { response in
                 guard let data = response.data else {

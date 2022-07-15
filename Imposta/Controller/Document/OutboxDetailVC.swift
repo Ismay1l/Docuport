@@ -112,7 +112,7 @@ class OutboxDetailVC: UIViewController {
                 SVProgressHUD.dismiss()
                 try! data.write(to: path, options: .atomic)
                 let appDelegate = AppDelegate()
-                if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+                if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                     appDelegate.saveFile(type: .inbox, document: self.document!, path: path.path)
                 } else {
                     appDelegate.saveFile(type: .outbox, document: self.document!, path: path.path)
@@ -130,7 +130,7 @@ class OutboxDetailVC: UIViewController {
             preview()
         } else {
             editDocument = document
-            if UserDefaultsHelper.shared.getUserType() == UserType.Client.rawValue {
+            if UserDefaultsHelper.shared.getUserType() == UserType.client.rawValue {
                 serviceChoice()
             } else {
                 presentNavFullScreen(id: "documentEditNav")
