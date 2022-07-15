@@ -163,7 +163,7 @@ extension UserDefaults {
         return accountInfo
     }
     
-    static func setAccountInfo(_ accountInfo: ClientAdvisor) {
+    static func setAccountInfo(_ accountInfo: AdvisorAccount) {
         saveObject(accountInfo, key: "accountInfo")
     }
     
