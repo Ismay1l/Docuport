@@ -25,6 +25,8 @@ class HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.setup()
+        
         collectionView.collectionViewLayout = UICollectionViewFlowLayout()
         isGridFlowLayoutUsed = false
         
@@ -33,7 +35,6 @@ class HomeVC: UIViewController {
         
 
         setLogout(view: logoutIcon)
-        setup()
         
         if GetUserType.user.isUserClient() {
         accountNameLbl.type = .continuous
@@ -115,6 +116,10 @@ extension HomeVC {
                         return HomePageService(listIcon: service.listIcon, gridIcon: service.gridIcon, id: service.id, departmentID: service.departmentID, displayName: service.displayName, departmentDisplayName: service.departmentDisplayName, color: service.color)
                     }
                     self.servicesListNew = array
+                    print("count: \(self.servicesListNew.count)")
+                    let myUploads = HomePageService(listIcon: "iconGridUploads", gridIcon: "iconGridUploads", id: 0, departmentID: 0, displayName: "My Uploads", departmentDisplayName: "My Uploads", color: "#007AFF")
+                    self.servicesListNew.append(myUploads)
+                    print("count: \(self.servicesListNew.count)")
                     self.collectionView.reloadData()
                     SVProgressHUD.dismiss()
                 }
@@ -127,6 +132,8 @@ extension HomeVC {
             AppApi.shared.getAllServicesNew { response in
                 if response != nil {
                     self.servicesListNew = response
+                    let myUploads = HomePageService(listIcon: "iconGridUploads", gridIcon: "iconGridUploads", id: 0, departmentID: 0, displayName: "My Uploads", departmentDisplayName: "My Uploads", color: "#007AFF")
+                    self.servicesListNew.append(myUploads)
                     self.collectionView.reloadData()
                     SVProgressHUD.dismiss()
                 }
@@ -224,17 +231,20 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! HomeListCVCell
+        var cell = UICollectionViewCell()
         
-        if servicesListNew[indexPath.row].isMyUploads ?? false {
-            cell.iconImageView.image = R.image.iconGridUploads()
+        let cardCell = collectionView.dequeueReusableCell(withReuseIdentifier: "gridCell", for: indexPath) as! HomeListCVCell
+        
+        if indexPath.row == self.servicesListNew.count - 1 {
+            cardCell.iconImageView.image = UIImage.init(named: self.servicesListNew[indexPath.row].gridIcon!)
         } else {
-            cell.iconImageView.image = convertBase64StringToImage(imageBase64String: servicesListNew[indexPath.row].gridIcon ?? "" )
+            cardCell.iconImageView.image = convertBase64StringToImage(imageBase64String: servicesListNew[indexPath.row].gridIcon ?? "" )
         }
-        cell.titleLbl.text = servicesListNew[indexPath.row].departmentDisplayName
+        cardCell.titleLbl.text = servicesListNew[indexPath.row].departmentDisplayName
         
-        cell.bgView?.backgroundColor = UIColor.init(hexString: servicesListNew[indexPath.row].color ?? "" )
-        cell.bgView?.shadowColor = UIColor.init(hexString: servicesListNew[indexPath.row].color ?? "" ).withAlphaComponent(0.35)
+        cardCell.bgView?.backgroundColor = UIColor.init(hexString: servicesListNew[indexPath.row].color ?? "" )
+        cardCell.bgView?.shadowColor = UIColor.init(hexString: servicesListNew[indexPath.row].color ?? "" ).withAlphaComponent(0.35)
+        cell = cardCell
         
         return cell
     }
@@ -260,11 +270,16 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == servicesListNew.count {
-            onDocuments(service: servicesListNew[indexPath.row])
-        } else {
-            onTags(index: indexPath.row)
-        }
+//        if indexPath.row == servicesListNew.count {
+//            onDocuments(service: servicesListNew[indexPath.row])
+//        } else {
+//            onTags(index: indexPath.row)
+//        }
+//        if indexPath.row == self.servicesListNew.count - 1 {
+//            myUploads()
+//        } else {
+            onDocuments(service: self.servicesListNew[indexPath.row])
+//        }
     }
     
 }
