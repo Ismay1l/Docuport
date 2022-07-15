@@ -55,6 +55,28 @@ extension UIViewController {
         }
     }
     
+    func myUploads() {
+        if let VC = R.storyboard.main.documentsVC() {
+            var uploads: MyUploadsResponse?
+            documentType = .inbox
+            ProfileApi.shared.myUploads { response in
+                print(response)
+                uploads = response
+            } failure: { string in
+                print(string)
+            }
+            VC.pageTitle = "My Uploads"
+            VC.myUploads = uploads
+            if let navController = self.navigationController {
+            navigationController?.pushViewController(VC, animated: true)
+            } else {
+                VC.modalPresentationStyle = .fullScreen
+                self.present(VC, animated: true)
+            }
+        }
+    }
+
+    
     func onBack() {
         if let navController = self.navigationController {
             navController.popViewController(animated: true)

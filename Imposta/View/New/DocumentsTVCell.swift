@@ -60,6 +60,10 @@ class DocumentsTVCell: UITableViewCell {
         }
     }
     
+    func getUploads(uploads: Item1) {
+        self.titleLbl.text = uploads.displayName
+    }
+    
     
     override func prepareForReuse() {
            // invoke superclass implementation

@@ -35,6 +35,8 @@ class DocumentsVC: UIViewController {
     var serviceId: Int?
     var tagId: Int = -1
     
+    var myUploads: MyUploadsResponse?
+    
     var showSearchView = false
     
     var searchDocument: DocumentSearch?
@@ -257,14 +259,19 @@ extension DocumentsVC: UITableViewDataSource, UITableViewDelegate {
 //            let cell = tableView.dequeueReusableCell(withIdentifier: "gridCell", for: indexPath) as! DocumentsTVCell
 //            return cell
 //        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
-        if GetUserType.user.isUserClient() {
-            cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
-        } else {
-            cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
-        }
-            return cell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
+        
+//        if documentType == .inbox {
+//            cell.getUploads(uploads: (self.myUploads?.items?[indexPath.row])!)
+//        } else {
+            if GetUserType.user.isUserClient() {
+                cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+            } else {
+                cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+            }
 //        }
+        
+            return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
