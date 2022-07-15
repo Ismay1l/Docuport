@@ -241,7 +241,7 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
                 guard let result = response as? ClientInfoUser1 else { return }
 
                 if let VC = R.storyboard.advisor.clientInfoVC() {
-                    VC.client = result
+                    VC.clientBusiness = result
                     let showPopup = SBCardPopupViewController(contentViewController: VC)
                     showPopup.show(onViewController: self)
                 }
@@ -257,7 +257,7 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
                 guard let result = response as? ClientInfoUser2 else { return }
                 
                 if let VC = R.storyboard.advisor.clientInfoVC() {
-                    VC.client = result
+                    VC.clientPersonal = result
                     let showPopup = SBCardPopupViewController(contentViewController: VC)
                     showPopup.show(onViewController: self)
                 }

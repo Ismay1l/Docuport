@@ -89,9 +89,9 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
     
     @IBAction func editButtonAction(_ sender: UIButton) {
         if clientType == 1 {
-            editClientNew = clientBusiness
+            editClientBusiness = clientBusiness
         } else if clientType == 2 {
-            editClientNew = clientPersonal
+            editClientPersonal = clientPersonal
         }
         presentNavFullScreen1(id: "clientEditNVC")
     }

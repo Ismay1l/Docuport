@@ -13,7 +13,8 @@ var shadowColorAlpha = CGFloat(0.35)
 var strColorCode = "CCCCCC"
 
 var editClient: ResultClients?
-var editClientNew: ClientInfo?
+var editClientBusiness: ClientInfoUser1?
+var editClientPersonal: ClientInfoUser2?
 var editDocument: ResultDocument?
 var searchType = SerachType.documents
 var documentType = DocumentType.inbox
