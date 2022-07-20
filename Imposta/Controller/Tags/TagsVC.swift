@@ -32,7 +32,10 @@ class TagsVC: UIViewController {
         collectionView.collectionViewLayout = UICollectionViewFlowLayout()
         pageTitleLbl.text = pageTitle
       
-        setLogout(view: logoutIcon)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onLogout))
+                self.logoutIcon.isUserInteractionEnabled = true
+                self.logoutIcon.addGestureRecognizer(gesture)
+//        setLogout(view: logoutIcon)
         setupInteractions()
         
         print("clientType: \(GetUserType.user.isUserClient())")
@@ -68,6 +71,17 @@ class TagsVC: UIViewController {
         super.viewWillAppear(true)
         accountNameLbl.text = UserDefaultsHelper.shared.getClientName()
     }
+    
+    @objc func onLogout() {
+                print(#function)
+                ProfileApi.shared.logoutProfile { result in
+                    print(result)
+                }
+            let appDelegate = AppDelegate()
+            appDelegate.setRoot()
+    //        setLogout(view: logoutIcon)
+            print("gestured used")
+        }
 }
 
 extension TagsVC {

@@ -333,9 +333,14 @@ extension UIViewController {
     }
     
     @objc func onHome() {
-        tabBarController?.selectedIndex = 0
-        self.navigationController?.popToRootViewController(animated: false)
-        self.view.window?.rootViewController?.dismiss(animated: true)
+        print(#function)
+                  ProfileApi.shared.logoutProfile { result in
+                      print(result)
+                  }
+              let appDelegate = AppDelegate()
+              appDelegate.setRoot()
+      //        setLogout(view: logoutIcon)
+              print("gestured used")
     }
 }
 

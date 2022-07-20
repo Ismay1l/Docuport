@@ -36,6 +36,10 @@ class UploadAdvisorVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onLogout))
+        self.logoutIcon.isUserInteractionEnabled = true
+        self.logoutIcon.addGestureRecognizer(gesture)
+        
         imagePicker =  UIImagePickerController()
         imagePicker.delegate = self
         NotificationCenter.default.addObserver(self, selector: #selector(documentUpload), name: .documentSaved, object: nil)
@@ -70,6 +74,17 @@ class UploadAdvisorVC: UIViewController {
         actionSheet.addAction(cancel)
         self.present(actionSheet, animated: true, completion: nil)
     }
+    
+    @objc func onLogout() {
+                print(#function)
+                ProfileApi.shared.logoutProfile { result in
+                    print(result)
+                }
+            let appDelegate = AppDelegate()
+            appDelegate.setRoot()
+    //        setLogout(view: logoutIcon)
+            print("gestured used")
+        }
     
     func camera() {
         self.getImage(fromSourceType: .camera)
@@ -171,7 +186,7 @@ extension UploadAdvisorVC {
     private func setupInteractions() {
         logoNav.isUserInteractionEnabled = true
         logoNav.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onHome)))
-        setLogout(view: logoutIcon)
+//        setLogout(view: logoutIcon)
     }
     
     @IBAction func shareBtnAction(_ sender: UIButton) {

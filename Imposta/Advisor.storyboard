@@ -1311,15 +1311,12 @@
                                                     <constraint firstAttribute="bottom" secondItem="lXr-DL-UJt" secondAttribute="bottom" id="zG8-sy-yS0"/>
                                                 </constraints>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DA-BH-Azh">
+                                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4DA-BH-Azh">
                                                 <rect key="frame" x="20" y="450" width="54" height="32"/>
                                                 <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                 <state key="normal" title="Logout">
                                                     <color key="titleColor" red="0.0" green="0.57647058819999997" blue="1" alpha="1" colorSpace="custom" customColorSpace="adobeRGB1998"/>
                                                 </state>
-                                                <connections>
-                                                    <action selector="logoutBtnAction:" destination="eDL-lY-9yB" eventType="touchUpInside" id="yH5-1D-C3t"/>
-                                                </connections>
                                             </button>
                                         </subviews>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

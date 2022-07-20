@@ -21,14 +21,14 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
     var clientBusiness: ClientInfoUser1?
     var clientPersonal: ClientInfoUser2?
     
-    var clientType: Int = 1
+    var clientType: Int?
     
     var popupViewController: SBCardPopupViewController?
     let allowsTapToDismissPopupCard = false
     let allowsSwipeToDismissPopupCard = false
 
     override func viewDidLoad() {
-        clientType = clientPersonal?.clientType ?? 1
+//        clientType = clientPersonal?.clientType ?? 1
         super.viewDidLoad()
         wrapperViewHeight.constant = self.view.frame.size.height
         
@@ -41,7 +41,7 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
     }
     
     func bindModel() {
-        if clientType == Int(ClientType.Business.rawValue) {
+        if clientType == 1 {
             clientNameLbl.text = "\(clientBusiness?.name ?? "")"
             clientOwnerLbl.text = clientBusiness?.ownerUser
             clientAddressLbl.text = clientBusiness?.emailAddress
@@ -55,7 +55,7 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
                 clientServicesLbl.text = clientServices
             }
 //            print("nameQQQ: \(client?.name ?? "")")
-        } else if clientType == Int(ClientType.Personal.rawValue) {
+        } else if clientType == 2 {
             clientNameLbl.text = "\(clientPersonal?.firstName ?? "") \(clientPersonal?.lastName ?? "")"
             clientOwnerLbl.text = clientPersonal?.ownerUser
             clientAddressLbl.text = clientPersonal?.emailAddress

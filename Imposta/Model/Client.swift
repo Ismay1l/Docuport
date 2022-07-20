@@ -131,17 +131,14 @@ struct Item: Codable {
 // MARK: - ClientInfo
 struct ClientInfoUser1: Codable {
     let id, clientType: Int?
-    let name: String?
-    let tradeName: String?
-    let taxpayerIdentificationNumber: String?
-    let website: String?
+    let name, tradeName, taxpayerIdentificationNumber, website: String?
     let emailAddress, phoneNumber: String?
     let advisorUserID, ownerUserID: Int?
     let ownerUser: String?
     let hasProfilePicture: Bool?
-    let address: String?
-    let services: [ServiceUser1]?
-    let collaborators: [String]?
+    let address: Address1?
+    let services: [ServiceBusiness]?
+    let collaborators: [Collaborator1]?
 
     enum CodingKeys: String, CodingKey {
         case id, clientType, name, tradeName, taxpayerIdentificationNumber, website, emailAddress, phoneNumber
@@ -151,8 +148,36 @@ struct ClientInfoUser1: Codable {
     }
 }
 
+// MARK: - Address
+struct Address1: Codable {
+    let id: Int?
+    let addressLine1, addressLine2, city: String?
+    let stateID: Int?
+    let zipCode: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, addressLine1, addressLine2, city
+        case stateID = "stateId"
+        case zipCode
+    }
+}
+
+// MARK: - Collaborator
+struct Collaborator1: Codable {
+    let id, collaboratorUserID: Int?
+    let collaboratorUser: String?
+    let isActive: Bool?
+    let services: [Int]?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case collaboratorUserID = "collaboratorUserId"
+        case collaboratorUser, isActive, services
+    }
+}
+
 // MARK: - Service
-struct ServiceUser1: Codable {
+struct ServiceBusiness: Codable {
     let id, departmentID: Int?
     let displayName, departmentDisplayName, color: String?
 
@@ -163,20 +188,54 @@ struct ServiceUser1: Codable {
     }
 }
 
+//struct ClientInfoUser1: Codable {
+//    let id, clientType: Int?
+//    let name: String?
+//    let tradeName: String?
+//    let taxpayerIdentificationNumber: String?
+//    let website: String?
+//    let emailAddress, phoneNumber: String?
+//    let advisorUserID, ownerUserID: Int?
+//    let ownerUser: String?
+//    let hasProfilePicture: Bool?
+//    let address: String?
+//    let services: [ServiceUser1]?
+//    let collaborators: [String]?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id, clientType, name, tradeName, taxpayerIdentificationNumber, website, emailAddress, phoneNumber
+//        case advisorUserID = "advisorUserId"
+//        case ownerUserID = "ownerUserId"
+//        case ownerUser, hasProfilePicture, address, services, collaborators
+//    }
+//}
+//
+//// MARK: - Service
+//struct ServiceUser1: Codable {
+//    let id, departmentID: Int?
+//    let displayName, departmentDisplayName, color: String?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id
+//        case departmentID = "departmentId"
+//        case displayName, departmentDisplayName, color
+//    }
+//}
+
 // MARK: - ClientInfo
+
 struct ClientInfoUser2: Codable {
     let id, clientType: Int?
     let firstName, lastName, emailAddress, phoneNumber: String?
     let advisorUserID: Int?
-    let socialSecurityNumber: String?
-    let birthDate: String?
+    let socialSecurityNumber, birthDate: String?
     let maritalStatus, ownerUserID: Int?
     let ownerUser: String?
     let hasProfilePicture: Bool?
-    let address: String?
+    let address: AddressUser2?
     let services: [ServiceUser2]?
-    let collaborators: [String]?
-    let spouseInfo: String?
+    let collaborators: [Collaborator2]?
+    let spouseInfo: SpouseInfo2?
 
     enum CodingKeys: String, CodingKey {
         case id, clientType, firstName, lastName, emailAddress, phoneNumber
@@ -184,6 +243,36 @@ struct ClientInfoUser2: Codable {
         case socialSecurityNumber, birthDate, maritalStatus
         case ownerUserID = "ownerUserId"
         case ownerUser, hasProfilePicture, address, services, collaborators, spouseInfo
+    }
+}
+
+// MARK: - Address
+struct AddressUser2: Codable {
+    let id: Int?
+    let addressLine1: String?
+    let addressLine2: String?
+    let city: String?
+    let stateID: Int?
+    let zipCode: String?
+
+    enum CodingKeys: String, CodingKey {
+        case id, addressLine1, addressLine2, city
+        case stateID = "stateId"
+        case zipCode
+    }
+}
+
+// MARK: - Collaborator
+struct Collaborator2: Codable {
+    let id, collaboratorUserID: Int?
+    let collaboratorUser: String?
+    let isActive: Bool?
+    let services: [Int]?
+
+    enum CodingKeys: String, CodingKey {
+        case id
+        case collaboratorUserID = "collaboratorUserId"
+        case collaboratorUser, isActive, services
     }
 }
 
@@ -198,3 +287,48 @@ struct ServiceUser2: Codable {
         case displayName, departmentDisplayName, color
     }
 }
+
+struct SpouseInfo2: Codable {
+    let id: Int?
+    let firstName, lastName, fullName: String?
+    let socialSecurityNumber: String?
+    let birthDate: String?
+    let phoneNumber, address: String?
+}
+
+
+
+//struct ClientInfoUser2: Codable {
+//    let id, clientType: Int?
+//    let firstName, lastName, emailAddress, phoneNumber: String?
+//    let advisorUserID: Int?
+//    let socialSecurityNumber: String?
+//    let birthDate: String?
+//    let maritalStatus, ownerUserID: Int?
+//    let ownerUser: String?
+//    let hasProfilePicture: Bool?
+//    let address: String?
+//    let services: [ServiceUser2]?
+//    let collaborators: [String]?
+//    let spouseInfo: String?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id, clientType, firstName, lastName, emailAddress, phoneNumber
+//        case advisorUserID = "advisorUserId"
+//        case socialSecurityNumber, birthDate, maritalStatus
+//        case ownerUserID = "ownerUserId"
+//        case ownerUser, hasProfilePicture, address, services, collaborators, spouseInfo
+//    }
+//}
+
+// MARK: - Service
+//struct ServiceUser2: Codable {
+//    let id, departmentID: Int?
+//    let displayName, departmentDisplayName, color: String?
+//
+//    enum CodingKeys: String, CodingKey {
+//        case id
+//        case departmentID = "departmentId"
+//        case displayName, departmentDisplayName, color
+//    }
+//}

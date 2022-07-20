@@ -36,9 +36,13 @@ class ClientNewVC: UIViewController {
         emailViewWidth.constant = 0
         alertView.isHidden = true
         
-        onLogoIcon.isUserInteractionEnabled = true
-        onLogoIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onHome)))
-        setLogout(view: onLogoutIcon)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onHome))
+                self.onLogoutIcon.isUserInteractionEnabled = true
+                self.onLogoutIcon.addGestureRecognizer(gesture)
+        
+//        onLogoIcon.isUserInteractionEnabled = true
+//        onLogoIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onHome)))
+//        setLogout(view: onLogoutIcon)
         
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
@@ -48,7 +52,7 @@ class ClientNewVC: UIViewController {
         getClientListNew()
         
         if !GetUserType.user.isUserAdvisor() {
-            addButtonView.isHidden = false
+            addButtonView.isHidden = true
         }
         
         hideKeyboardOnTap()
@@ -78,7 +82,7 @@ class ClientNewVC: UIViewController {
             else {
                 self.isFinish = false
                 if let result = response as? ClientList  {
-                    print("resultWWW: \(result)")
+//                    print("resultWWW: \(result)")
                     for client in (result.items)! {
                         print("clientttt: \(client)")
                         self.arrClientNew.append(client)
@@ -235,6 +239,7 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
         SVProgressHUD.show()
         print("idWWW: \(arrClientNew[indexPath.row].id ?? 0)")
 //        arrClientNew[indexPath.row].clientType
+        print("typeWWW: \(arrClientNew[indexPath.row].clientType)")
         if  arrClientNew[indexPath.row].clientType == 1 {
             ClientApi.shared.getClientByIDBusiness(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
                 self.isFinish = false
@@ -242,6 +247,7 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
 
                 if let VC = R.storyboard.advisor.clientInfoVC() {
                     VC.clientBusiness = result
+                    VC.clientType = result.clientType
                     let showPopup = SBCardPopupViewController(contentViewController: VC)
                     showPopup.show(onViewController: self)
                 }
@@ -258,6 +264,7 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
                 
                 if let VC = R.storyboard.advisor.clientInfoVC() {
                     VC.clientPersonal = result
+                    VC.clientType = result.clientType
                     let showPopup = SBCardPopupViewController(contentViewController: VC)
                     showPopup.show(onViewController: self)
                 }

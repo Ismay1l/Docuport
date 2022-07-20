@@ -48,6 +48,21 @@ class HomeVC: UIViewController {
         configureUpdates()
         configureLabels()
         observeAppVersionDidChange()
+        
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onLogout))
+                self.logoutIcon.isUserInteractionEnabled = true
+                self.logoutIcon.addGestureRecognizer(gesture)
+    }
+    
+    @objc func onLogout() {
+            print(#function)
+            ProfileApi.shared.logoutProfile { result in
+                print(result)
+            }
+        let appDelegate = AppDelegate()
+        appDelegate.setRoot()
+//        setLogout(view: logoutIcon)
+        print("gestured used")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -280,6 +295,8 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
 //        } else {
 //            onDocuments(service: self.servicesListNew[indexPath.row])
 //        }
+        
+        
     }
     
 }

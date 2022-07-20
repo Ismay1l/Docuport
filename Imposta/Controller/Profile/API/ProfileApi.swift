@@ -186,8 +186,10 @@ extension ProfileApi {
                         encoding: JSONEncoding.default,
                                headers: innerHeader)
                     .responseData { response in
+                        
+                        UserDefaultsHelper.shared.removeAllObjects()
+                        print("UserDefault: \(UserDefaultsHelper.shared.getUserType())")
                             guard let data = response.data else {
-                                print("açaşsahib91@gmailş")
                                 return
                             }
                     }

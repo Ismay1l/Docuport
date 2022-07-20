@@ -86,7 +86,21 @@ extension SettingsVC: SelectAccount {
     func setupLogo() {
         onLogoIcon.isUserInteractionEnabled = true
         onLogoIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onHome)))
-        setLogout(view: logoutIcon)
+//        setLogout(view: logoutIcon)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onLogout))
+        self.logoutIcon.isUserInteractionEnabled = true
+        self.logoutIcon.addGestureRecognizer(gesture)
     }
+    
+    @objc func onLogout() {
+                print(#function)
+                ProfileApi.shared.logoutProfile { result in
+                    print(result)
+                }
+            let appDelegate = AppDelegate()
+            appDelegate.setRoot()
+    //        setLogout(view: logoutIcon)
+            print("gestured used")
+        }
 }
 

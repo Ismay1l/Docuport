@@ -51,8 +51,8 @@ class ClientApi: NSObject {
     
     func getClientByIDBusiness(id: Int, success: @escaping(ClientInfoUser1) -> Void, failure: @escaping() -> Void) {
         
-        AF.sessionConfiguration.timeoutIntervalForRequest = 60
-        AF.sessionConfiguration.timeoutIntervalForResource = 60
+//        AF.sessionConfiguration.timeoutIntervalForRequest = 60
+//        AF.sessionConfiguration.timeoutIntervalForResource = 60
         
         
         AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/business/\(id)",
@@ -89,8 +89,10 @@ class ClientApi: NSObject {
                 return
             }
             do {
+//                let decoder = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
                 let client = try JSONDecoder().decode(ClientInfoUser2.self, from: data)
                 success(client)
+//                print("decoderWWW: \(decoder)")
                 
             } catch let err {
                 print("error: \(err)")

@@ -37,12 +37,26 @@ class ClientInfoEditVC: UIViewController {
         photoIV.addGestureRecognizer(tapGesture)
         photoIV.isUserInteractionEnabled = true
         
-        onLogoIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onHome)))
-        setLogout(view: logoutIcon)
+//        onLogoIcon.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onHome)))
+//        setLogout(view: logoutIcon)
+        let gesture = UITapGestureRecognizer(target: self, action: #selector(onLogout))
+                self.logoutIcon.isUserInteractionEnabled = true
+                self.logoutIcon.addGestureRecognizer(gesture)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(noti:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(noti:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
+    
+    @objc func onLogout() {
+                print(#function)
+                ProfileApi.shared.logoutProfile { result in
+                    print(result)
+                }
+            let appDelegate = AppDelegate()
+            appDelegate.setRoot()
+    //        setLogout(view: logoutIcon)
+            print("gestured used")
+        }
 }
 
 //Funcs

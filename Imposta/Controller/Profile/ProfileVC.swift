@@ -157,10 +157,10 @@ class ProfileVC: UIViewController {
         }
     }
     
-    @IBAction func logoutBtnAction(_ sender: UIButton) {
-        let appDelegate = AppDelegate()
-        appDelegate.setRoot()
-    }
+//    @IBAction func logoutBtnAction(_ sender: UIButton) {
+//        let appDelegate = AppDelegate()
+//        appDelegate.setRoot()
+//    }
 
 }
 
@@ -186,10 +186,14 @@ extension ProfileVC: SelectAccount {
             ProfileApi.shared.logoutProfile { result in
                 print(result)
             }
-        setLogout(view: logoutIcon)
+        let appDelegate = AppDelegate()
+        appDelegate.setRoot()
+//        setLogout(view: logoutIcon)
+        print("gestured used")
+    }
+       
 
-            print("gestured used")
-        }
+        
         
 //        func logoutProfile() {
 //            ProfileApi.shared.

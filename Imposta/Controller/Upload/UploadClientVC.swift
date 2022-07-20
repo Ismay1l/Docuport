@@ -166,14 +166,15 @@ extension UploadClientVC {
     }
     
     @objc func onLogout() {
-            print(#function)
-            ProfileApi.shared.logoutProfile { result in
-                print(result)
-            }
-        setLogout(view: logoutIcon)
-
+                print(#function)
+                ProfileApi.shared.logoutProfile { result in
+                    print(result)
+                }
+            let appDelegate = AppDelegate()
+            appDelegate.setRoot()
+    //        setLogout(view: logoutIcon)
             print("gestured used")
-        }
+    }
 }
 
 extension UploadClientVC {
