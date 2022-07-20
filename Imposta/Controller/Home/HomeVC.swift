@@ -25,6 +25,8 @@ class HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("user id: \(UserDefaultsHelper.shared.getClientID())")
+        
         self.setup()
         
         collectionView.collectionViewLayout = UICollectionViewFlowLayout()
@@ -270,8 +272,8 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == servicesListNew.count-1 {
-            onDocuments(service: servicesListNew[indexPath.row])
+        if indexPath.row == servicesListNew.count - 1 {
+            onDocuments(service: servicesListNew[indexPath.row], tagId: servicesListNew[indexPath.row].id ?? 0)
         } else {
             onTags(index: indexPath.row)
         }
@@ -297,6 +299,25 @@ extension HomeVC {
             controller.modalPresentationStyle = .fullScreen
             self.present(controller, animated: true)
         }
+    }
+    
+    private func onUploads() {
+        let controller = initController(with: "Main", withIdentifier: "UploadAdvisorVC") as! UploadAdvisorVC
+        controller.pageTitleLbl.text = "My Uploads"
+        ProfileApi.shared.myUploads { response in
+            controller.uploads = response
+            documentType = .inbox
+            if let navController = self.navigationController {
+                navController.pushViewController(controller, animated: true)
+            } else {
+                controller.modalPresentationStyle = .fullScreen
+                self.present(controller, animated: true)
+            }
+        } failure: { string in
+            print(string)
+        }
+        
+
     }
 }
 

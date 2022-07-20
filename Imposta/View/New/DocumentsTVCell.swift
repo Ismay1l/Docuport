@@ -30,16 +30,16 @@ class DocumentsTVCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func reloadData(document: ResultDocument, documentType: DocumentType) {
+    func reloadData(document: Item1, documentType: DocumentType) {
         shareButton.tintColor = UIColor.init(hexString: document.service?.color ?? "")
         self.checkCell = false
 //        name = document.name
         shareButton.tag = document.id ?? 0
-        titleLbl.text = document.name ?? ""
+        titleLbl.text = document.displayName ?? ""
         var tags = ""
         
         for tag in document.tags ?? [] {
-            tags.append(tag.name ?? "")
+            tags.append(tag.displayName ?? "")
             tags.append("    ")
         }
         tagsLbl.text = tags
@@ -59,11 +59,6 @@ class DocumentsTVCell: UITableViewCell {
             documentsPhoto.image = nil
         }
     }
-    
-    func getUploads(uploads: Item1) {
-        self.titleLbl.text = uploads.displayName
-    }
-    
     
     override func prepareForReuse() {
            // invoke superclass implementation

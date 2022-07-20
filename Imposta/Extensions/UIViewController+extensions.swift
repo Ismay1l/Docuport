@@ -35,7 +35,7 @@ extension UIViewController {
         return controller
     }
     
-    func onDocuments(service: HomePageService, tagId: Int = -1) {
+    func onDocuments(service: HomePageService, tagId: Int) {
         if let VC = R.storyboard.main.documentsVC() {
             if service.isMyUploads ?? false {
                 documentType = .outbox
@@ -55,26 +55,26 @@ extension UIViewController {
         }
     }
     
-    func myUploads() {
-        if let VC = R.storyboard.main.documentsVC() {
-            var uploads: MyUploadsResponse?
-            documentType = .inbox
-            ProfileApi.shared.myUploads { response in
-                print(response)
-                uploads = response
-            } failure: { string in
-                print(string)
-            }
-            VC.pageTitle = "My Uploads"
-            VC.myUploads = uploads
-            if let navController = self.navigationController {
-            navigationController?.pushViewController(VC, animated: true)
-            } else {
-                VC.modalPresentationStyle = .fullScreen
-                self.present(VC, animated: true)
-            }
-        }
-    }
+//    func myUploads() {
+//        if let VC = R.storyboard.main.documentsVC() {
+//            var uploads: MyUploadsResponse?
+//            documentType = .inbox
+//            ProfileApi.shared.myUploads { response in
+//                print(response)
+//                uploads = response
+//            } failure: { string in
+//                print(string)
+//            }
+//            VC.pageTitle = "My Uploads"
+//            VC.myUploads = uploads
+//            if let navController = self.navigationController {
+//            navigationController?.pushViewController(VC, animated: true)
+//            } else {
+//                VC.modalPresentationStyle = .fullScreen
+//                self.present(VC, animated: true)
+//            }
+//        }
+//    }
 
     
     func onBack() {

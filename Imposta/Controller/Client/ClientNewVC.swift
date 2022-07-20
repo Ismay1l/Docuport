@@ -48,7 +48,7 @@ class ClientNewVC: UIViewController {
         getClientListNew()
         
         if !GetUserType.user.isUserAdvisor() {
-            addButtonView.isHidden = false
+            addButtonView.isHidden = true
         }
         
         hideKeyboardOnTap()
