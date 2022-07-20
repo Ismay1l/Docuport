@@ -64,8 +64,8 @@ class ClientApi: NSObject {
                 return
             }
             do {
-                let client = try JSONDecoder().decode(ClientInfoUser1.self, from: data)
-                success(client)
+//                let client = try JSONDecoder().decode(ClientInfoUser1.self, from: data)
+//                success(client)
                 
             } catch let err {
                 print("error: \(err)")

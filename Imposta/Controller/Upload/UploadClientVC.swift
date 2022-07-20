@@ -12,6 +12,9 @@ import SVProgressHUD
 import MarqueeLabel
 
 class UploadClientVC: UIViewController {
+    
+    var myUploads: MyUploadsResponse?
+    
     @IBOutlet weak var logoIcon: UIImageView!
     @IBOutlet weak var accountNameLbl: MarqueeLabel!
     @IBOutlet weak var tableView: UITableView!
@@ -53,6 +56,7 @@ class UploadClientVC: UIViewController {
         documentType = .outbox
         setupInteractions()
         setup()
+        self.getUploads()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -230,12 +234,12 @@ extension UploadClientVC {
 
 extension UploadClientVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrDocument.count
+        return myUploads?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
-        cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+//        cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
         return cell
     }
     
@@ -299,5 +303,17 @@ extension UploadClientVC: UIImagePickerControllerDelegate, UINavigationControlle
 extension UploadClientVC: SelectAccount {
     func selectAccount(_: Bool) {
         accountNameLbl.text = UserDefaultsHelper.shared.getClientName()
+    }
+}
+
+extension UploadClientVC {
+    func getUploads() {
+        ProfileApi.shared.myUploads { response in
+            self.myUploads = response
+            documentType = .inbox
+            self.tableView.reloadData()
+        } failure: { string in
+            print(string)
+        }
     }
 }

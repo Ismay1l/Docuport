@@ -183,6 +183,7 @@ extension TagsVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let id = tagListNew[indexPath.row].id else { return }
+//        guard let departId = tagListNew[indexPath.row].
         let name = tagListNew[indexPath.row].displayName ?? ""
         onDocuments(service: HomePageService(listIcon: "", gridIcon: "", id: id, departmentID: 0, displayName: name, departmentDisplayName: "", color: ""), tagId: id)
     }

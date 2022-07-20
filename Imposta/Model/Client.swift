@@ -141,7 +141,7 @@ struct ClientInfoUser1: Codable {
     let hasProfilePicture: Bool?
     let address: String?
     let services: [ServiceUser1]?
-    let collaborators: [String]?
+    let collaborators: [Collaborator]?
 
     enum CodingKeys: String, CodingKey {
         case id, clientType, name, tradeName, taxpayerIdentificationNumber, website, emailAddress, phoneNumber
@@ -161,6 +161,14 @@ struct ServiceUser1: Codable {
         case departmentID = "departmentId"
         case displayName, departmentDisplayName, color
     }
+}
+
+struct Collaborator: Codable {
+    let collaboratorUser: String?
+    let collaboratorUserId: Int?
+    let id: Int?
+    let isActive: Int?
+    let services: Int?
 }
 
 // MARK: - ClientInfo

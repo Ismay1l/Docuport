@@ -11,6 +11,9 @@ import QuickLook
 import SVProgressHUD
 
 class UploadAdvisorVC: UIViewController {
+    
+    var uploads: MyUploadsResponse?
+    
     @IBOutlet weak var logoNav: UIImageView!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var searchTF: UITextField!
@@ -183,12 +186,14 @@ extension UploadAdvisorVC {
 
 extension UploadAdvisorVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrDocument.count
+        return uploads?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
-        cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+        if let item = self.uploads?.items?[indexPath.row] {
+            cell.reloadData(document: item, documentType: DocumentType(rawValue: documentType.rawValue)!)
+        }
         return cell
     }
     

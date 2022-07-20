@@ -72,6 +72,7 @@ class DocumentsVC: UIViewController {
         
         setup()
         setupInteractions()
+        self.getUploads()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDocuments(notification:)), name: .changeAccount, object: nil)
         
@@ -251,7 +252,7 @@ extension DocumentsVC {
 
 extension DocumentsVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrDocument.count
+        return myUploads?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -264,27 +265,30 @@ extension DocumentsVC: UITableViewDataSource, UITableViewDelegate {
 //        if documentType == .inbox {
 //            cell.getUploads(uploads: (self.myUploads?.items?[indexPath.row])!)
 //        } else {
+        if let items = myUploads?.items?[indexPath.row] {
             if GetUserType.user.isUserClient() {
-                cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
-            } else {
-                cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
-            }
+                    cell.reloadData(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
+                } else {
+                    cell.reloadData(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
+                }
+        }
 //        }
         
             return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        hideSearchView()
-        let file = arrDocument[indexPath.row]
-        
-        previewFile(file) { [weak self] previewItem, data in
-            self?.urlPreviewItem = previewItem
-            try! data.write(to: previewItem, options: .atomic)
-            let previewVC = QLPreviewController()
-            previewVC.dataSource = self
-            self?.present(previewVC, animated: true, completion: nil)
-        }
+//        hideSearchView()
+//        if let item = myUploads?.items?[indexPath.row] {
+//            let file = item
+//            previewFile(file) { [weak self] previewItem, data in
+//                self?.urlPreviewItem = previewItem
+//                try! data.write(to: previewItem, options: .atomic)
+//                let previewVC = QLPreviewController()
+//                previewVC.dataSource = self
+//                self?.present(previewVC, animated: true, completion: nil)
+//            }
+//        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -319,4 +323,15 @@ extension DocumentsVC: SelectAccount {
     }
 }
 
+extension DocumentsVC {
+    func getUploads() {
+        ProfileApi.shared.myUploads { response in
+            self.myUploads = response
+            documentType = .inbox
+            self.tableView.reloadData()
+        } failure: { string in
+            print(string)
+        }
+    }
+}
 
