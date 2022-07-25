@@ -25,6 +25,7 @@ class SelectServiceVC: UIViewController, SBCardPopupContent {
     var delegate: ServiceListDelegate?
     var selectedService: ClientServiceData?
     var arrAllService = [ClientServiceData]()
+    var allServices = [HomePageService]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,21 +36,31 @@ class SelectServiceVC: UIViewController, SBCardPopupContent {
     func setup() {
         arrAllService.removeAll()
         SVProgressHUD.show()
-        AppApi.shared.getAllServices(success: { response in
-            guard let result = response.result else { return }
-            for index in 0..<result.count {
-                self.arrAllService.append(result[index])
-                self.arrAllService[index].isSelected = false
-                
-                if let _ = self.client?.services?.firstIndex(where: {$0.service?.id == result[index].id}) {
-                    self.arrAllService[index].isSelected = true
-                }
-            }
+        
+        AppApi.shared.getAllServicesNew { result in
+            print(result)
+            self.allServices = result
             self.tableView.reloadData()
             SVProgressHUD.dismiss()
-        }, failure: {
-            SVProgressHUD.dismiss()
-        })
+        } failure: {
+            print("Error")
+        }
+        
+//        AppApi.shared.getAllServices(success: { response in
+//            guard let result = response.result else { return }
+//            for index in 0..<result.count {
+//                self.arrAllService.append(result[index])
+//                self.arrAllService[index].isSelected = false
+//
+//                if let _ = self.client?.services?.firstIndex(where: {$0.service?.id == result[index].id}) {
+//                    self.arrAllService[index].isSelected = true
+//                }
+//            }
+//            self.tableView.reloadData()
+//            SVProgressHUD.dismiss()
+//        }, failure: {
+//            SVProgressHUD.dismiss()
+//        })
     }
     
     @IBAction func saveBtnAction(_ sender: UIButton) {
@@ -61,15 +72,16 @@ class SelectServiceVC: UIViewController, SBCardPopupContent {
 
 extension SelectServiceVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let itemCount = arrAllService.count
+//        let itemCount = arrAllService.count
+        let itemCount = self.allServices.count
         tableViewHeight.constant = CGFloat(itemCount * 66)
         return itemCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SelectServicesTVCell", for: indexPath) as! SelectServicesTVCell
-        cell.titleLbl.text = arrAllService[indexPath.item].name
-        if arrAllService[indexPath.item].isSelected ?? false {
+        cell.titleLbl.text = allServices[indexPath.row].displayName
+        if allServices[indexPath.item].isSelected ?? false {
             cell.backgroundColor = UIColor(hexString: "#F0F0F0")
         } else {
             cell.backgroundColor = .white
@@ -79,13 +91,13 @@ extension SelectServiceVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let VC = R.storyboard.advisor.employeeEditNewVC() {
-            selectedService = arrAllService[indexPath.item]
-            let selection = (arrAllService[indexPath.item].isSelected)!
-            arrAllService[indexPath.item].isSelected = !selection
+//            selectedService = allServices[indexPath.row]
+            let selection = (allServices[indexPath.row].isSelected) ?? false
+            allServices[indexPath.item].isSelected = !selection
             
-            VC.departmentId = arrAllService[indexPath.item].department?.id
+            VC.departmentId = allServices[indexPath.item].departmentID
             VC.delegate = self
-            VC.pageTitle = selectedService?.name
+            VC.pageTitle = self.allServices[indexPath.row].displayName
             let showPopup = SBCardPopupViewController(contentViewController: VC)
             showPopup.show(onViewController: self)
         }

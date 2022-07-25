@@ -35,19 +35,35 @@ class InviteVC: UIViewController {
     @IBAction func sendBtnAction(_ sender: UIButton) {
         if let email = emailTF.text, email.isValidEmail() {
             SVProgressHUD.show()
-            ClientApi.shared.sendInvitaion(email: email, success: {
+            ProfileApi.shared.sendInvitation(email: email) { response in
                 SVProgressHUD.dismiss()
                 self.alertWithHandler(title: "SUCCESS", message: "Invitation has sent", actionButton: "OK") {
                     self.emailTF.text = ""
                     self.emailTF.resignFirstResponder()
                 }
-            }, failure: {
-                SVProgressHUD.dismiss()
-                self.alert(title: "ERROR", message: "Invitation hasn't sent", actionButton: "OK")
-            })
-        } else {
-            alert(title: "WARNING", message: "Please enter email address", actionButton: "OK")
-        }
+                } failure: { error in
+                    SVProgressHUD.dismiss()
+                    self.alert(title: "ERROR", message: "Invitation hasn't sent", actionButton: "OK")
+                }
+                
+            }
+            else {
+                alert(title: "WARNING", message: "Please enter email address", actionButton: "OK")
+            }
+
+//            ClientApi.shared.sendInvitaion(email: email, success: {
+//                SVProgressHUD.dismiss()
+//                self.alertWithHandler(title: "SUCCESS", message: "Invitation has sent", actionButton: "OK") {
+//                    self.emailTF.text = ""
+//                    self.emailTF.resignFirstResponder()
+//                }
+//            }, failure: {
+//                SVProgressHUD.dismiss()
+//                self.alert(title: "ERROR", message: "Invitation hasn't sent", actionButton: "OK")
+//            })
+//        } else {
+//            alert(title: "WARNING", message: "Please enter email address", actionButton: "OK")
+//        }
     }
     
     @IBAction func showAccountsAction(_ sender: UIButton) {

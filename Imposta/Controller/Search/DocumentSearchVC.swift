@@ -113,15 +113,15 @@ class DocumentSearchVC: UIViewController {
     func getService() {
         SVProgressHUD.show()
         if !isClient {
-            AppApi.shared.getAllServices(success: { response in
-                if let result = response.result {
-                    self.arrService = result
-                    self.picker.reloadAllComponents()
-                }
-                SVProgressHUD.dismiss()
-            }, failure: {
-                SVProgressHUD.dismiss()
-            })
+//            AppApi.shared.getAllServices(success: { response in
+//                if let result = response.result {
+//                    self.arrService = result
+//                    self.picker.reloadAllComponents()
+//                }
+//                SVProgressHUD.dismiss()
+//            }, failure: {
+//                SVProgressHUD.dismiss()
+//            })
         } else {
             ClientApi.shared.getClientServiceList(clientId: "\(UserDefaultsHelper.shared.getClientID())", success: { response in
                 guard let result = response.result else { return }

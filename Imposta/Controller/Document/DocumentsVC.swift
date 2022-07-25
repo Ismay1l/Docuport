@@ -33,7 +33,12 @@ class DocumentsVC: UIViewController {
     var isFinish = false, isSearch = false
     var pageTitle: String?
     var serviceId: Int?
-    var tagId: Int = -1
+    var tagId: Int?
+    var clientId: Int?
+    
+    
+    var isUploadsCell: Bool?
+//    var tagId: Int?
     
     var myUploads: MyUploadsResponse?
     
@@ -49,6 +54,8 @@ class DocumentsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         pageTitleLbl.text = pageTitle
+        
+//        getDocument(docType: <#T##String#>)
         
         listButton.tintColor = .white
         listButton.isHidden = true
@@ -72,6 +79,13 @@ class DocumentsVC: UIViewController {
         
         setup()
         setupInteractions()
+        if self.isUploadsCell ?? false {
+            self.getMyUploads()
+        } else {
+            self.getReceivedDocs()
+        }
+        
+//        self.getReceivedDocs()
         
         NotificationCenter.default.addObserver(self, selector: #selector(reloadDocuments(notification:)), name: .changeAccount, object: nil)
         
@@ -174,7 +188,7 @@ extension DocumentsVC {
     fileprivate func setup() {
         searchDocument = DocumentSearch()
         searchType = .documents
-        getDocument(docType: documentType.rawValue)
+//        getDocument(docType: documentType.rawValue)
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.addSubview(refreshControl)
@@ -185,7 +199,7 @@ extension DocumentsVC {
         SVProgressHUD.show()
         DocumentApi.shared.getDocument(docType: docType, limit: limit,
                                        offset: arrDocument.count, serviceId: serviceId,
-                                       tagId: tagId,
+                                       tagId: tagId ?? 0,
                                        searchText: searchTF.text ?? "", isSearch: isSearch,
                                        success: { response in
             self.refreshControl.endRefreshing()
@@ -233,7 +247,7 @@ extension DocumentsVC {
     @objc func refresh() {
         arrDocument.removeAll()
         tableView.reloadData()
-        getDocument(docType: documentType.rawValue)
+//        getDocument(docType: documentType.rawValue)
     }
     
     @objc func reloadDocuments(notification: NSNotification) {
@@ -251,33 +265,42 @@ extension DocumentsVC {
 
 extension DocumentsVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrDocument.count
+        return myUploads?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        if isGridFlowLayoutUsed {
-//            let cell = tableView.dequeueReusableCell(withIdentifier: "gridCell", for: indexPath) as! DocumentsTVCell
-//            return cell
-//        } else {
+        //    /        if isGridFlowLayoutUsed {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "gridCell", for: indexPath) as! DocumentsTVCell
+        //            return cell
+        //        } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
         
-//        if documentType == .inbox {
-//            cell.getUploads(uploads: (self.myUploads?.items?[indexPath.row])!)
-//        } else {
+        //        if documentType == .inbox {
+        //            cell.getUploads(uploads: (self.myUploads?.items?[indexPath.row])!)
+        //        } else {
+        if let items = myUploads?.items?[indexPath.row] {
             if GetUserType.user.isUserClient() {
-                cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+                cell.reloadData2(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
             } else {
-                cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+                cell.reloadData2(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
             }
-//        }
+        }
+        //        }
         
-            return cell
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         hideSearchView()
-        let file = arrDocument[indexPath.row]
-        
+//        ProfileApi.shared.getMyDocsPreview(with: myUploads?.items?[indexPath.row].id ?? 0) { string in
+//            print(string)
+//
+//        } failure: { string in
+//            print(string)
+//        }
+
+        guard let file = myUploads?.items?[indexPath.row] else { return }
+        //
         previewFile(file) { [weak self] previewItem, data in
             self?.urlPreviewItem = previewItem
             try! data.write(to: previewItem, options: .atomic)
@@ -289,7 +312,7 @@ extension DocumentsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if !isFinish {
-            if indexPath.row == arrDocument.count - 1 {
+            if indexPath.row == arrDocument.count - 1  {
                 getDocument(docType: documentType.rawValue)
             }
         }
@@ -331,6 +354,50 @@ extension DocumentsVC: SelectAccount {
     //        setLogout(view: logoutIcon)
             print("gestured used")
         }
+}
+
+extension DocumentsVC {
+    func getMyUploads() {
+        ProfileApi.shared.getMyUploads { response in
+            self.myUploads = response
+            documentType = .inbox
+            print("myUploadsWWW: \(self.myUploads)")
+            self.tableView.reloadData()
+        } failure: { string in
+            print(string)
+        }
+    }
+    
+    func getReceivedDocs() {
+        
+        ProfileApi.shared.receivedDocs(clientId: UserDefaultsHelper.shared.getClientID(), tagId: self.tagId ?? 0,
+                                       serviceId: self.serviceId ?? 0) { result in
+            self.myUploads  = result
+            print("tagIdReceived: \(self.tagId ?? 0), serviceIdRecevied: \(self.serviceId ?? 0)")
+//            print("myUploadsWWW: \(self.myUploads)")
+//            print("myUploadsWWW: \(self.myUploads)")
+            documentType = .inbox
+            self.tableView.reloadData()
+        } failure: { err in
+            print(err)
+        }
+
+    }
+    
+
+    
+//    func getReceivedDocs() {
+//        ProfileApi.shared.receivedDocs { result in
+//            self.myUploads  = result
+//            print("myUploadsWWW: \(self.myUploads)")
+////            print("myUploadsWWW: \(self.myUploads)")
+//            documentType = .inbox
+//            self.tableView.reloadData()
+//        } failure: { err in
+//            print(err)
+//        }
+//
+//    }
 }
 
 

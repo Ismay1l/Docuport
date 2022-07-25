@@ -24,12 +24,17 @@ class ClientInfoEditVC: UIViewController {
     @IBOutlet weak var onLogoIcon: UIImageView!
     @IBOutlet weak var logoutIcon: UIImageView!
     
+    var isImageChanged: Bool? = false
+    var id: Int?
+    var clientType: Int?
     var client: ResultClients?
     var arrTag = [ClientServiceData]()
     var imagePicker: UIImagePickerController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.id = UserDefaults.standard.value(forKey: "editId") as! Int
+        self.clientType = UserDefaults.standard.value(forKey: "clientType") as! Int
         self.tagView.textFont = UIFont(name: "HelveticaNeue", size: 16.0)!
         tagView.delegate = self
         setup()
@@ -45,6 +50,9 @@ class ClientInfoEditVC: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(noti:)), name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(noti:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        self.getPic()
+        self.getInfo()
     }
     
     @objc func onLogout() {
@@ -223,17 +231,38 @@ extension ClientInfoEditVC {
     }
     
     @IBAction func saveBtnAction(_ sender: UIButton) {
-        if client?.clientType == ClientType.Business.rawValue {
-            if updateBusinessClient() {
-                saveClient(clientType: "business")
-                
+        let data = self.photoIV.image?.pngData()
+        
+        let params1 = saveClientPersonalParameter(id: self.id ?? 0, EmailAddress: self.emailTF.text!, FirstName: self.nameTF.text!, LastName: self.surnameTF.text!, PhoneNumber: self.phoneNumberTF.text!, isProfilePictureChanged: self.isImageChanged ?? false, ProfilePicture: "\(data)", Services: [""])
+
+        let params2 = saveClientBusinessParameter(id: self.id ?? 0, Name: self.nameTF.text!, EmailAddress: self.emailTF.text!, PhoneNumber: self.phoneNumberTF.text!, isProfilePictureChanged: self.isImageChanged ?? false, ProfilePicture: "\(data)", Services: [""])
+        if clientType == 1 {
+            ClientApi.shared.saveClientBusiness(id: self.id ?? 0, parameters: params2) { info in
+
+            } failure: { string in
+                print(string)
             }
-        } else if client?.clientType == ClientType.Personal.rawValue {
-            if updatePersonalClient() {
-                saveClient(clientType: "personal")
+
+        } else if clientType == 2 {
+                ClientApi.shared.saveClientPersonal(id: self.id ?? 0, parameters: params1) { info in
+
+                } failure: { string in
+                    print(string)
+                }
+
             }
         }
-    }
+//        if client?.clientType == ClientType.Business.rawValue {
+//            if updateBusinessClient() {
+//                saveClient(clientType: "business")
+//
+//            }
+//        } else if client?.clientType == ClientType.Personal.rawValue {
+//            if updatePersonalClient() {
+//                saveClient(clientType: "personal")
+//            }
+//        }
+//    }
 }
 
 extension ClientInfoEditVC: TagListViewDelegate {
@@ -263,11 +292,55 @@ extension ClientInfoEditVC: UIImagePickerControllerDelegate, UINavigationControl
         self.dismiss(animated: true) { [weak self] in
             guard let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
             self?.photoIV.image = image.resize()
+            self?.isImageChanged = true
             self?.photoIV.contentMode = .scaleAspectFill
         }
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension ClientInfoEditVC {
+    func getPic() {
+        SVProgressHUD.show()
+        ClientApi.shared.getClientPicByIDBusiness(id: self.id ?? 0) { data in
+            print(data)
+            self.photoIV.image = UIImage.init(data: data)
+        } failure: { string in
+            print(string)
+        }
+    }
+    
+    func getInfo() {
+        print(self.id)
+        if clientType == 1 {
+            ClientApi.shared.getClientByIDBusiness(id: self.id ?? 0) { info in
+                print(info)
+                self.nameTF.text = info.name
+                self.surnameTF.text = info.name
+                self.emailTF.text = info.emailAddress
+                self.phoneNumberTF.text = info.phoneNumber
+                SVProgressHUD.dismiss()
+            } failure: { string in
+                print(string)
+                SVProgressHUD.dismiss()
+            }
+            
+        } else if clientType == 2 {
+            ClientApi.shared.getClientByIDPersonal(id: self.id ?? 0) { info in
+                print("2: \(info)")
+                self.nameTF.text = info.firstName
+                self.surnameTF.text = info.lastName
+                self.emailTF.text = info.emailAddress
+                self.phoneNumberTF.text = info.phoneNumber
+                SVProgressHUD.dismiss()
+            } failure: { string in
+                print("error")
+                SVProgressHUD.dismiss()
+            }
+        }
+
     }
 }

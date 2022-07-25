@@ -236,45 +236,64 @@ extension ClientNewVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        SVProgressHUD.show()
-        print("idWWW: \(arrClientNew[indexPath.row].id ?? 0)")
-//        arrClientNew[indexPath.row].clientType
-        print("typeWWW: \(arrClientNew[indexPath.row].clientType)")
-        if  arrClientNew[indexPath.row].clientType == 1 {
-            ClientApi.shared.getClientByIDBusiness(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
-                self.isFinish = false
-                guard let result = response as? ClientInfoUser1 else { return }
+        
+        let userType = UserDefaultsHelper.shared.getUserType()
+        
+        if userType == UserType.employee.rawValue {
+            print("No right to view the infoVC")
+        } else {
+            SVProgressHUD.show()
 
-                if let VC = R.storyboard.advisor.clientInfoVC() {
-                    VC.clientBusiness = result
-                    VC.clientType = result.clientType
-                    let showPopup = SBCardPopupViewController(contentViewController: VC)
-                    showPopup.show(onViewController: self)
-                }
+            print("idWWW: \(arrClientNew[indexPath.row].id ?? 0)")
+    //        arrClientNew[indexPath.row].clientType
+            print("typeWWW: \(arrClientNew[indexPath.row].clientType)")
+            if  arrClientNew[indexPath.row].clientType == 1 {
+                print("if")
+                ClientApi.shared.getClientByIDBusiness(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
+                    self.isFinish = false
+                    guard let result = response as? ClientInfoUser1 else { return }
 
-                self.tableView.reloadData()
-                SVProgressHUD.dismiss()
-            }, failure: {
-                SVProgressHUD.dismiss()
-            })
-        } else if arrClientNew[indexPath.row].clientType == 2 {
-            ClientApi.shared.getClientByIDPersonal(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
-                self.isFinish = false
-                guard let result = response as? ClientInfoUser2 else { return }
+                    if let VC = R.storyboard.advisor.clientInfoVC() {
+                        VC.clientBusiness = result
+                        VC.clientType = result.clientType
+//                        VC.clientServices = result.services?[indexPath.row]
+                        let showPopup = SBCardPopupViewController(contentViewController: VC)
+                        showPopup.show(onViewController: self)
+                    }
+
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
+                }, failure: { string in
+                    SVProgressHUD.dismiss()
+                })
                 
-                if let VC = R.storyboard.advisor.clientInfoVC() {
-                    VC.clientPersonal = result
-                    VC.clientType = result.clientType
-                    let showPopup = SBCardPopupViewController(contentViewController: VC)
-                    showPopup.show(onViewController: self)
-                }
+//                ClientApi.shared.getClientPicByIDBusiness(id: arrClientNew[indexPath.row].id ?? 0) { data in
+//                    self.onLogoIcon.image = UIImage(data: data)
+//                } failure: { string in
+//                    print("error: \(string)")
+//                }
 
-                self.tableView.reloadData()
-                SVProgressHUD.dismiss()
-            }, failure: {
-                SVProgressHUD.dismiss()
-            })
+            } else if arrClientNew[indexPath.row].clientType == 2 {
+                ClientApi.shared.getClientByIDPersonal(id: arrClientNew[indexPath.row].id ?? 0, success: { response in
+                    self.isFinish = false
+                    print("else if")
+                    guard let result = response as? ClientInfoUser2 else { return }
+                    
+                    if let VC = R.storyboard.advisor.clientInfoVC() {
+                        VC.clientPersonal = result
+                        VC.clientType = result.clientType
+                        let showPopup = SBCardPopupViewController(contentViewController: VC)
+                        showPopup.show(onViewController: self)
+                    }
+                    
+                    self.tableView.reloadData()
+                    SVProgressHUD.dismiss()
+                }, failure: { string in
+                    SVProgressHUD.dismiss()
+                })
+            }
         }
+
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

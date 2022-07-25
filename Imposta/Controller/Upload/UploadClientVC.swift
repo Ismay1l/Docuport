@@ -21,7 +21,8 @@ class UploadClientVC: UIViewController {
     @IBOutlet weak var logoutIcon: UIImageView!
     @IBOutlet weak var pageTitleLbl: UILabel!
     
-    var arrDocument = [ResultDocument]()
+    var myUploads: MyUploadsResponse?
+//    var arrDocument = [ResultDocument]()
     var imagePicker = UIImagePickerController()
     var refreshControl = UIRefreshControl()
     
@@ -53,6 +54,8 @@ class UploadClientVC: UIViewController {
         documentType = .outbox
         setupInteractions()
         setup()
+        
+        self.getMyUploads()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,6 +77,18 @@ class UploadClientVC: UIViewController {
         actionSheet.addAction(photoLibrary)
         actionSheet.addAction(cancel)
         self.present(actionSheet, animated: true, completion: nil)
+        self.getMyUploads()
+    }
+    
+    func getMyUploads() {
+        ProfileApi.shared.getMyUploads { response in
+            self.myUploads = response
+            documentType = .inbox
+            print("myUploadsWWW: \(self.myUploads)")
+            self.tableView.reloadData()
+        } failure: { string in
+            print(string)
+        }
     }
     
     func camera() {
@@ -151,9 +166,9 @@ extension UploadClientVC {
     }
     
     @IBAction func shareBtnAction(_ sender: UIButton) {
-        let row = arrDocument.index(where: { $0.id == sender.tag }) ?? 0
-        let file = arrDocument[row]
-        shareFile(file)
+//        let row = arrDocument.index(where: { $0.id == sender.tag }) ?? 0
+//        let file = arrDocument[row]
+//        shareFile(file)
     }
     
     func setupInteractions() {
@@ -179,85 +194,103 @@ extension UploadClientVC {
 
 extension UploadClientVC {
     fileprivate func setup() {
-        getDocument(docType: documentType.rawValue)
-        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
-        tableView.addSubview(refreshControl)
+//        getDocument(docType: documentType.rawValue)
+//        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+//        refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
+//        tableView.addSubview(refreshControl)
     }
     
-    func getDocument(docType: String) {
-        SVProgressHUD.show()
-        DocumentApi.shared.getDocument(docType: docType, limit: limit,
-                                       offset: arrDocument.count,
-                                       searchText: searchTF.text ?? "",
-                                       success: { [weak self] response in
-                                        guard let self = self else { return }
-                                        
-                                        self.refreshControl.endRefreshing()
-                                        if response.documents!.count < self.limit {
-                                            self.isFinish = true
-                                        }
-                                        if self.arrDocument.isEmpty {
-                                            self.arrDocument = response.documents ?? []
-                                        } else {
-                                            self.arrDocument.append(contentsOf: response.documents ?? [])
-                                        }
-                                        SVProgressHUD.dismiss()
-                                        self.tableView.reloadData()
-                                       }, failure: { code, errorMessage in
-                                        SVProgressHUD.dismiss()
-                                        self.tableView.reloadData()
-                                        self.refreshControl.endRefreshing()
-                                        if code == 0 {
-                                            self.alertWithHandler(title: errorMessage, message: "", actionButton: "OK") {
-                                                SVProgressHUD.show()
-                                                AppApi.shared.loginWithUserDefaults(success: {
-                                                    self.refresh()
-                                                    SVProgressHUD.dismiss()
-                                                }, failure: {
-                                                    SVProgressHUD.dismiss()
-                                                })
-                                            }
-                                        }
-                                       })
-    }
+//    func getDocument(docType: String) {
+//        SVProgressHUD.show()
+//        DocumentApi.shared.getDocument(docType: docType, limit: limit,
+//                                       offset: arrDocument.count,
+//                                       searchText: searchTF.text ?? "",
+//                                       success: { [weak self] response in
+//                                        guard let self = self else { return }
+//
+//                                        self.refreshControl.endRefreshing()
+//                                        if response.documents!.count < self.limit {
+//                                            self.isFinish = true
+//                                        }
+//                                        if self.arrDocument.isEmpty {
+//                                            self.arrDocument = response.documents ?? []
+//                                        } else {
+//                                            self.arrDocument.append(contentsOf: response.documents ?? [])
+//                                        }
+//                                        SVProgressHUD.dismiss()
+//                                        self.tableView.reloadData()
+//                                       }, failure: { code, errorMessage in
+//                                        SVProgressHUD.dismiss()
+//                                        self.tableView.reloadData()
+//                                        self.refreshControl.endRefreshing()
+//                                        if code == 0 {
+//                                            self.alertWithHandler(title: errorMessage, message: "", actionButton: "OK") {
+//                                                SVProgressHUD.show()
+//                                                AppApi.shared.loginWithUserDefaults(success: {
+//                                                    self.refresh()
+//                                                    SVProgressHUD.dismiss()
+//                                                }, failure: {
+//                                                    SVProgressHUD.dismiss()
+//                                                })
+//                                            }
+//                                        }
+//                                       })
+//    }
     
     @objc func refresh() {
-        arrDocument.removeAll()
+//        arrDocument.removeAll()
         tableView.reloadData()
-        getDocument(docType: documentType.rawValue)
+        self.getMyUploads()
+        
+//        getDocument(docType: documentType.rawValue)
     }
 }
 
 extension UploadClientVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrDocument.count
+        return self.myUploads?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //    /        if isGridFlowLayoutUsed {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "gridCell", for: indexPath) as! DocumentsTVCell
+        //            return cell
+        //        } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
-        cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+        
+        //        if documentType == .inbox {
+        //            cell.getUploads(uploads: (self.myUploads?.items?[indexPath.row])!)
+        //        } else {
+        if let items = myUploads?.items?[indexPath.row] {
+            if GetUserType.user.isUserClient() {
+                cell.reloadData2(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
+            } else {
+                cell.reloadData2(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
+            }
+        }
+        //        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let file = arrDocument[indexPath.row]
-        
-        previewFile(file) { [weak self] previewItem, data in
-            self?.urlPreviewItem = previewItem
-            try! data.write(to: previewItem, options: .atomic)
-            let previewVC = QLPreviewController()
-            previewVC.dataSource = self
-            self?.present(previewVC, animated: true, completion: nil)
-        }
+//        let file = arrDocument[indexPath.row]
+//
+//        previewFile(file) { [weak self] previewItem, data in
+//            self?.urlPreviewItem = previewItem
+//            try! data.write(to: previewItem, options: .atomic)
+//            let previewVC = QLPreviewController()
+//            previewVC.dataSource = self
+//            self?.present(previewVC, animated: true, completion: nil)
+//        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if !isFinish {
-            if indexPath.row == arrDocument.count - 1 {
-                getDocument(docType: documentType.rawValue)
-            }
-        }
+//        if !isFinish {
+//            if indexPath.row == arrDocument.count - 1 {
+//                getDocument(docType: documentType.rawValue)
+//            }
+//        }
     }
 }
 

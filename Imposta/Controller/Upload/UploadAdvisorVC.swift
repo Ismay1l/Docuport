@@ -18,6 +18,7 @@ class UploadAdvisorVC: UIViewController {
     @IBOutlet weak var logoutIcon: UIImageView!
     @IBOutlet weak var pageTitleLbl: UILabel!
     
+    var myUploads: MyUploadsResponse?
     var arrDocument = [ResultDocument]()
     var imagePicker = UIImagePickerController()
     var refreshControl = UIRefreshControl()
@@ -50,6 +51,7 @@ class UploadAdvisorVC: UIViewController {
         documentType = .outbox
         setupInteractions()
         setup()
+        self.getMyUploads()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -73,6 +75,17 @@ class UploadAdvisorVC: UIViewController {
         //actionSheet.addAction(uploadFile)
         actionSheet.addAction(cancel)
         self.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    func getMyUploads() {
+        ProfileApi.shared.getMyUploads { response in
+            self.myUploads = response
+            documentType = .inbox
+            print("myUploadsWWW: \(self.myUploads)")
+            self.tableView.reloadData()
+        } failure: { string in
+            print(string)
+        }
     }
     
     @objc func onLogout() {
@@ -180,7 +193,8 @@ extension UploadAdvisorVC {
     @objc func refresh() {
         arrDocument.removeAll()
         tableView.reloadData()
-        getDocument(docType: documentType.rawValue)
+//        getDocument(docType: documentType.rawValue)
+        getMyUploads()
     }
     
     private func setupInteractions() {
@@ -198,18 +212,34 @@ extension UploadAdvisorVC {
 
 extension UploadAdvisorVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrDocument.count
+        return self.myUploads?.items?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //    /        if isGridFlowLayoutUsed {
+        //            let cell = tableView.dequeueReusableCell(withIdentifier: "gridCell", for: indexPath) as! DocumentsTVCell
+        //            return cell
+        //        } else {
         let cell = tableView.dequeueReusableCell(withIdentifier: "listCell", for: indexPath) as! DocumentsTVCell
-        cell.reloadData(document: arrDocument[indexPath.row], documentType: DocumentType(rawValue: documentType.rawValue)!)
+        
+        //        if documentType == .inbox {
+        //            cell.getUploads(uploads: (self.myUploads?.items?[indexPath.row])!)
+        //        } else {
+        if let items = myUploads?.items?[indexPath.row] {
+            if GetUserType.user.isUserClient() {
+                cell.reloadData2(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
+            } else {
+                cell.reloadData2(document: items, documentType: DocumentType(rawValue: documentType.rawValue)!)
+            }
+        }
+        //        }
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let file = arrDocument[indexPath.row]
-        
+        guard let file = myUploads?.items?[indexPath.row] else { return }
+        //
         previewFile(file) { [weak self] previewItem, data in
             self?.urlPreviewItem = previewItem
             try! data.write(to: previewItem, options: .atomic)
@@ -217,6 +247,7 @@ extension UploadAdvisorVC: UITableViewDataSource, UITableViewDelegate {
             previewVC.dataSource = self
             self?.present(previewVC, animated: true, completion: nil)
         }
+
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

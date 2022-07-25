@@ -36,30 +36,50 @@ extension UIViewController {
     }
     
     func onDocuments(service: HomePageService, tagId: Int = -1) {
-        if let VC = R.storyboard.main.documentsVC() {
-            if service.isMyUploads ?? false {
-                documentType = .outbox
-            } else {
-                documentType = .inbox
-                VC.serviceId = service.id
-                VC.tagId = tagId
-            }
-            VC.pageTitle = service.displayName
-            
-            if let navController = self.navigationController {
-                navController.pushViewController(VC, animated: true)
-            } else {
-                VC.modalPresentationStyle = .fullScreen
-                self.present(VC, animated: true)
+            if let VC = R.storyboard.main.documentsVC() {
+                if service.isMyUploads ?? false {
+                    documentType = .outbox
+                } else {
+                    documentType = .inbox
+                    VC.serviceId = service.id
+                    VC.tagId = tagId
+                }
+                VC.pageTitle = service.displayName
+                
+                if let navController = self.navigationController {
+                    navController.pushViewController(VC, animated: true)
+                } else {
+                    VC.modalPresentationStyle = .fullScreen
+                    self.present(VC, animated: true)
+                }
             }
         }
-    }
+    
+//    func onDocuments(service: HomePageService, tagId: Int = -1) {
+//        if let VC = R.storyboard.main.documentsVC() {
+//            if service.isMyUploads ?? false {
+//                documentType = .outbox
+//            } else {
+//                documentType = .inbox
+//                VC.serviceId = service.id
+//                VC.tagId = tagId
+//            }
+//            VC.pageTitle = service.displayName
+//            
+//            if let navController = self.navigationController {
+//                navController.pushViewController(VC, animated: true)
+//            } else {
+//                VC.modalPresentationStyle = .fullScreen
+//                self.present(VC, animated: true)
+//            }
+//        }
+//    }
     
     func myUploads() {
         if let VC = R.storyboard.main.documentsVC() {
             var uploads: MyUploadsResponse?
             documentType = .inbox
-            ProfileApi.shared.myUploads { response in
+            ProfileApi.shared.getMyUploads { response in
                 print(response)
                 uploads = response
             } failure: { string in
@@ -163,14 +183,16 @@ extension UIViewController {
         }
     }
     
-    func previewFile(_ file: ResultDocument, completion: @escaping ((URL, Data) -> Void)) {
+    func previewFile(_ file: Item1, completion: @escaping ((URL, Data) -> Void)) {
+        print("ttt \(file.attachment?.genFileName)")
         if let fileName = file.attachment?.genFileName {
+           
             if let type = file.attachment?.contentType?.components(separatedBy: "/")[1] {
                 if type == "jpg" || type == "jpeg" || type == "gif" || type == "png" {
                     
                     let vc = initController(with: "Main", withIdentifier: "ImagePreviewVC") as! ImagePreviewVC
                     let encodedURLString = fileName.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
-                    vc.imagePath = "\(ApiRequirements.apiUrl.rawValue)/api/documents/file/\(encodedURLString)"
+                    vc.imagePath = "\(ApiRequirements.apiUrl.rawValue)/api/v1/document/documents/\(file.id)/preview"
                     vc.navTitle = fileName
                     vc.modalPresentationStyle = .fullScreen
                     

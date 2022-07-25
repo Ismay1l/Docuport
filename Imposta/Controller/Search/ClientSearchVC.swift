@@ -73,14 +73,14 @@ class ClientSearchVC: UIViewController {
     
     func getAllServices() {
         SVProgressHUD.show()
-        AppApi.shared.getAllServices(success: { response in
-            self.arrService = response.result!
-            self.picker.reloadAllComponents()
-            SVProgressHUD.dismiss()
-        }, failure: {
-            SVProgressHUD.dismiss()
-            self.alert(title: "ERROR", message: "", actionButton: "OK")
-        })
+//        AppApi.shared.getAllServices(success: { response in
+//            self.arrService = response.result!
+//            self.picker.reloadAllComponents()
+//            SVProgressHUD.dismiss()
+//        }, failure: {
+//            SVProgressHUD.dismiss()
+//            self.alert(title: "ERROR", message: "", actionButton: "OK")
+//        })
     }
     
     @IBAction func clientTypeSelection(_ sender: Any) {

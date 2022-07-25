@@ -49,10 +49,10 @@ class ClientApi: NSObject {
         }
     }
     
-    func getClientByIDBusiness(id: Int, success: @escaping(ClientInfoUser1) -> Void, failure: @escaping() -> Void) {
+    func getClientByIDBusiness(id: Int, success: @escaping(ClientInfoUser1) -> Void, failure: @escaping(String) -> Void) {
         
-//        AF.sessionConfiguration.timeoutIntervalForRequest = 60
-//        AF.sessionConfiguration.timeoutIntervalForResource = 60
+        AF.sessionConfiguration.timeoutIntervalForRequest = 60
+        AF.sessionConfiguration.timeoutIntervalForResource = 60
         
         
         AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/business/\(id)",
@@ -69,13 +69,32 @@ class ClientApi: NSObject {
                 
             } catch let err {
                 print("error: \(err)")
-                failure()
+                failure("error: \(err)")
             }
         }
         
     }
     
-    func getClientByIDPersonal(id: Int, success: @escaping(ClientInfoUser2) -> Void, failure: @escaping() -> Void) {
+    func getClientPicByIDBusiness(id: Int, success: @escaping(Data) -> Void, failure: @escaping(String) -> Void) {
+        
+        AF.sessionConfiguration.timeoutIntervalForRequest = 60
+        AF.sessionConfiguration.timeoutIntervalForResource = 60
+        
+        
+        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/clients/\(id)/profile-picture",
+                   method: .get,
+                   headers: Header.shared.headerWithToken()).responseData { response in
+            print("responePPP: \(response)")
+            guard let data = response.data else {
+                print("no data fetched")
+                failure("no data fetched")
+                return
+            }
+            success(data)
+        }
+    }
+    
+    func getClientByIDPersonal(id: Int, success: @escaping(ClientInfoUser2) -> Void, failure: @escaping(String) -> Void) {
         
         AF.sessionConfiguration.timeoutIntervalForRequest = 60
         AF.sessionConfiguration.timeoutIntervalForResource = 60
@@ -96,10 +115,57 @@ class ClientApi: NSObject {
                 
             } catch let err {
                 print("error: \(err)")
-                failure()
+                failure("error: \(err)")
             }
         }
         
+    }
+    
+    func saveClientPersonal(id: Int, parameters: saveClientPersonalParameter, success: @escaping(ClientInfoUser2) -> Void, failure: @escaping(String) -> Void) {
+        let url = ApiRequirements.apiUrl.rawValue + "/api/v1/document/clients/personal/\(id)/basic-data"
+        let innerHeader = Header.shared.headerWithToken()
+        let params: Parameters = ["EmailAddress": parameters.EmailAddress, "FirstName": parameters.FirstName, "LastName": parameters.LastName, "Services": parameters.Services, "Id": parameters.id, "PhoneNumber": parameters.PhoneNumber, "IsProfilePictureChanged": parameters.isProfilePictureChanged, "ProfilePicture": parameters.ProfilePicture ?? ""]
+        
+        AF.request(url,
+                   method: .put,
+                   parameters: params,
+                   encoding: JSONEncoding.default,
+                   headers: innerHeader).responseData { response in
+            guard let data = response.data else {
+                print("data is nil in saveClientPersonal")
+                return
+            }
+            
+            do {
+                let decoder = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
+                print("jsonSerialization: \(decoder)")
+            } catch {
+                failure("error occured while decoding in \(#function)")
+            }
+        }
+    }
+    
+    func saveClientBusiness(id: Int, parameters: saveClientBusinessParameter, success: @escaping(ClientInfoUser2) -> Void, failure: @escaping(String) -> Void) {
+        let url =  ApiRequirements.apiUrl.rawValue + "/api/v1/document/clients/business/\(id)/basic-data"
+        let innerHeader = Header.shared.headerWithToken()
+        let params: Parameters = ["EmailAddress": parameters.EmailAddress, "Name": parameters.Name, "Services": parameters.Services, "Id": parameters.id]
+        
+        AF.request(url,
+                   method: .put,
+                   parameters: params,
+                   headers: innerHeader).responseData { response in
+            guard let data = response.data else {
+                print("data is nil in saveClientPersonal")
+                return
+            }
+            
+            do {
+                let decoder = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
+                print("jsonSerialization: \(decoder)")
+            } catch {
+                failure("error occured while decoding in \(#function)")
+            }
+        }
     }
     
     func getSearchedClient(limit: Int, offset: Int, clientSearch: ClientSearch, success: @escaping(Client) -> Void, failure: @escaping() -> Void) {
@@ -249,31 +315,31 @@ class ClientApi: NSObject {
     }
     
     func savePersonalClient(client: ResultClients, success: @escaping()->Void, failure: @escaping(String)->Void) {
-        var arrServices = [ClientParofileServices]()
-        for service in client.services! {
-            arrServices.append(ClientParofileServices(serviceId: service.service?.id, employeeUserId: service.employee?.id))
-        }
-        let params = ClientProfileParam(id: client.id, firstName: client.firstName ?? "", lastName: client.lastName ?? "", socialSecurityNumber: client.socialSecurityNumber ?? "", birthDate: client.birthDate ?? "", phoneNumber: client.phoneNumber ?? "", advisorUserId: client.advisor?.id, services: arrServices)
-        
-        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/clients/personal/\(client.id!)",
-            method: .put,
-            parameters: params,
-            encoder: JSONParameterEncoder.default,
-            headers: Header.shared.headerWithToken()).responseData { response in
-                guard let data = response.data else { return }
-                
-                do {
-                    let status = try JSONDecoder().decode(DocumentStatus.self, from: data)
-                    if status.success! {
-                        success()
-                    } else {
-                        failure(status.error?.message ?? "")
-                    }
-                } catch let err {
-                    print("error: \(err)")
-                    failure("")
-                }
-        }
+//        var arrServices = [ClientParofileServices]()
+//        for service in client.services! {
+//            arrServices.append(ClientParofileServices(serviceId: service.service?.id, employeeUserId: service.employee?.id))
+//        }
+//        let params = ClientProfileParam(id: client.id, firstName: client.firstName ?? "", lastName: client.lastName ?? "", socialSecurityNumber: client.socialSecurityNumber ?? "", birthDate: client.birthDate ?? "", phoneNumber: client.phoneNumber ?? "", advisorUserId: client.advisor?.id, services: arrServices)
+//        
+//        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/clients/personal/\(client.id!)",
+//            method: .put,
+//            parameters: params,
+//            encoder: JSONParameterEncoder.default,
+//            headers: Header.shared.headerWithToken()).responseData { response in
+//                guard let data = response.data else { return }
+//
+//                do {
+//                    let status = try JSONDecoder().decode(DocumentStatus.self, from: data)
+//                    if status.success! {
+//                        success()
+//                    } else {
+//                        failure(status.error?.message ?? "")
+//                    }
+//                } catch let err {
+//                    print("error: \(err)")
+//                    failure("")
+//                }
+//        }
     }
     
     func saveBusinessClient(client: ResultClients, success: @escaping()->Void, failure: @escaping(String)->Void) {

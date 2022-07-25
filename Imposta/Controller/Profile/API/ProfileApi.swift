@@ -43,7 +43,7 @@ class ProfileApi: NSObject {
 
 extension ProfileApi {
     // MARK: - Update Profile - Completed
-    func updateProfile(completion: @escaping (ProfileModel) -> Void) {
+    func getProfileInfo(completion: @escaping (ProfileModel) -> Void) {
         let url = baseURL + "/api/v1/identity/users/me"
         let innerHeader = self.header1
         let innerHeader2 = self.header2
@@ -66,7 +66,7 @@ extension ProfileApi {
         }
     }
     
-    // MARK: - ChangeCurrentAccount - not completed - request returns 200 but empty response - needs to be implemented
+    // MARK: - ChangeCurrentAccount - Completed
         func changeCurrentAccount(clientId: Int, success: @escaping(String) -> Void, failure: @escaping(String) -> Void) {
              let url = baseURL + "/api/v1/document/users/me/clients/current"
             let innerHeader = self.header1
@@ -93,7 +93,7 @@ extension ProfileApi {
             }
         }
     
-    //MARK: - SendInvitation - needs to be implemented somewhere in app
+    //MARK: - SendInvitation - Completed
         func sendInvitation(email: String, success: @escaping(SendInvitationResponse) -> Void, failure: @escaping(String) -> Void) {
             let url = baseURL + "/api/v1/document/invitations/send"
             let innerHeader = self.header1
@@ -118,7 +118,7 @@ extension ProfileApi {
             }
         }
     
-    //MARK: - ClientsList - needs to be implemented somewhere in app
+    //MARK: - ClientsList -Completed
         func clientsList(success: @escaping(ClientListParameter) -> Void, failure: @escaping(String) -> Void) {
             let url = baseURL + "/api/v1/document/clients"
             let innerHeader = self.header1
@@ -177,7 +177,7 @@ extension ProfileApi {
         }
     }
     
-    //MARK: - LogoutProfile - not completed
+    //MARK: - LogoutProfile - Completed
     func logoutProfile(completion: @escaping (String) -> Void) {
             let innerHeader = self.header1
                 do {
@@ -213,8 +213,8 @@ extension ProfileApi {
     }
     
     //MARK: - GET MyUploads - needs to be implemented somwhere in app
-    func myUploads(success: @escaping(MyUploadsResponse) -> Void, failure: @escaping(String) -> Void) {
-        let url = baseURL + "/api/v1/document/documents/my-upload?offset=0&limit=10"
+    func getMyUploads(success: @escaping(MyUploadsResponse) -> Void, failure: @escaping(String) -> Void) {
+        let url = baseURL + "/api/v1/document/documents/my-upload?offset=40&limit=10"
         let innerHeader = self.header1
         
         AF.request(url,
@@ -235,8 +235,9 @@ extension ProfileApi {
     }
     
     //MARK: - ReceivedDocs need to be implemented somewhere in app
-        func receivedDocs(success: @escaping(MyUploadsResponse) -> Void, failure: @escaping(String) -> Void) {
-            let url = baseURL + "/api/v1/document/documents/received"
+    func receivedDocs(clientId: Int, tagId: Int, serviceId: Int, success: @escaping(MyUploadsResponse) -> Void, failure: @escaping(String) -> Void) {
+        let url = baseURL + "/api/v1/document/documents/received?offset=0&tagId=\(tagId)&limit=10&serviceId=\(serviceId)"
+//            let url = baseURL + "/api/v1/document/documents/received?clientId=\(clientId)&offset=0&tagId=\(tagId)&limit=10&serviceId=\(serviceId)"
             let innerHeader = self.header1
             
             AF.request(url,
@@ -251,14 +252,15 @@ extension ProfileApi {
                 do {
                     let decoder = try JSONDecoder().decode(MyUploadsResponse.self, from: data)
                     success(decoder)
-                } catch {
+                } catch  {
+                    
                     failure("error occured while decoding in ReceivedDocs")
                 }
             }
         }
     
     // MARK: - MyDocsPreview - request result came as picture (data) - needs to be implemented, check request response on android
-    func MyDocsPreview(with id: Int, success: @escaping(String) -> Void, failure: @escaping(String) -> Void) {
+    func getMyDocsPreview(with id: Int, success: @escaping(Data) -> Void, failure: @escaping(String) -> Void) {
         let url = baseURL + "/api/v1/document/documents/\(id)/preview"
         let innerHeader = self.header1
         
@@ -271,39 +273,76 @@ extension ProfileApi {
                 return
             }
             
+//            do {
+//                let decoder = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
+//                print("jsonSerialization: \(decoder)")
+//                let decoder = try JSONDecoder().decode(String.self, from: data)
+                success(data)
+//            } catch {
+//                failure("error occured during decoding in MyDocsPreview")
+//            }
+        }
+    }
+    
+    struct updateTokenResponse: Decodable {
+        let accessToken: String?
+        let refreshToken: String?
+    }
+    
+    func updateTokens(success: @escaping(updateTokenResponse) -> Void, failure: @escaping(String) -> Void) {
+        let url = baseURL + "/api/v1/authentication/account/refresh-jwt-tokens?refreshToken=\(UserDefaultsHelper.shared.getAuthToken())"
+        let innerHeader = self.header2
+        
+        AF.request(url,
+                   method: .get,
+                   headers: innerHeader).responseData { response in
+            guard let data = response.data else {
+                print("data is nil in updateTokens")
+                return
+            }
             do {
-                let decoder = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as! Dictionary<String, Any>
-                print("jsonSerialization: \(decoder)")
-                //                let decoder = try JSONDecoder().decode(String.self, from: data)
-                //                success(decoder)
+                let decoder = try JSONDecoder().decode(updateTokenResponse.self, from: data)
+                print(decoder)
+                if let accessToken = decoder.accessToken, let refreshToken = decoder.refreshToken {
+                    print(UserDefaultsHelper.shared.getAuthToken())
+                    print(UserDefaultsHelper.shared.getToken())
+                    UserDefaults.standard.removeObject(forKey: "userToken")
+                    UserDefaults.standard.removeObject(forKey: "authToken")
+                    UserDefaultsHelper.shared.setToken(token: accessToken)
+                    UserDefaultsHelper.shared.setAuthToken(token: refreshToken)
+                    print(UserDefaultsHelper.shared.getAuthToken())
+                    print(UserDefaultsHelper.shared.getToken())
+                }
+                success(decoder)
             } catch {
-                failure("error occured during decoding in MyDocsPreview")
+                failure("error occured during decoding in updateTokens")
             }
         }
     }
     
     // MARK: - POST MyUploads haven't completed - needs to be implemented
-        func myUploadsPost(with parameters: MyUploadParameter, success: @escaping(MyUploadsResponse) -> Void, failure: @escaping(String) -> Void) {
-            let url = baseURL + "/api/v1/document/documents/my-upload"
-            let innerHeader = self.header1
-            
-            do {
-                let data = try JSONEncoder().encode(parameters)
-                guard let params = try JSONSerialization.jsonObject(with: data, options: []) as? Parameters else { fatalError() }
-                
-                AF.request(url,
-                           method: .post,
-                           parameters: params,
-                           encoding: JSONEncoding.default,
-                           headers: innerHeader).responseData { response in
-                    guard let data = response.data else {
-                        print("data is nil in myUploadsPost")
-                        return }
-                }
-            } catch {
-                print(error)
-            }
-        }
+//        func myUploadsPost(with parameters: MyUploadParameter, success: @escaping(MyUploadsResponse) -> Void, failure: @escaping(String) -> Void) {
+//            let url = baseURL + "/api/v1/document/documents/my-upload"
+//            let innerHeader = self.header1
+//
+//            do {
+//                let data = try JSONEncoder().encode(parameters)
+//                guard let params = try JSONSerialization.jsonObject(with: data, options: []) as? Parameters else { fatalError() }
+//
+//                AF.request(url,
+//                           method: .post,
+//                           parameters: params,
+//                           encoding: JSONEncoding.default,
+//                           headers: innerHeader).responseData { response in
+//                    guard let data = response.data else {
+//                        print("data is nil in myUploadsPost")
+//                        return }
+//                }
+//            } catch {
+//                print(error)
+//            }
+//        }
     
     //MARK: getDocTypeTagsForClientNew function response is nil so nothing happens
+    
 }

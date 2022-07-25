@@ -53,18 +53,18 @@ class SwitchVC: UIViewController {
 
 extension SwitchVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return arrUser.count
+        return arrUserNew.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SwitchUserCell") as! SwitchUserCell
-        cell.reloadCell(user: arrUser[indexPath.row])
+        cell.reloadCell(user: arrUserNew[indexPath.row])
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let userId = arrUser[indexPath.item].id else { return }
+        guard let userId = arrUserNew[indexPath.item].id else { return }
         UserDefaultsHelper.shared.setClientID(id: userId)
         dismiss(animated: true, completion: nil)
     }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Error: Decodable {
+struct Error: Codable {
     var code: Int?
     var message: String?
     var details: String?

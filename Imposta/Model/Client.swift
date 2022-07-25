@@ -293,7 +293,8 @@ struct SpouseInfo2: Codable {
     let firstName, lastName, fullName: String?
     let socialSecurityNumber: String?
     let birthDate: String?
-    let phoneNumber, address: String?
+    let phoneNumber: String?
+    let address: AddressUser2?
 }
 
 
@@ -332,3 +333,24 @@ struct SpouseInfo2: Codable {
 //        case displayName, departmentDisplayName, color
 //    }
 //}
+
+struct saveClientPersonalParameter {
+    let id: Int
+    let EmailAddress: String
+    let FirstName: String
+    let LastName: String
+    let PhoneNumber: String
+    let isProfilePictureChanged: Bool
+    let ProfilePicture: String?
+    let Services: [String]
+}
+
+struct saveClientBusinessParameter {
+    let id: Int
+    let Name: String
+    let EmailAddress: String
+    let PhoneNumber: String
+    let isProfilePictureChanged: Bool
+    let ProfilePicture: String?
+    let Services: [String]
+}

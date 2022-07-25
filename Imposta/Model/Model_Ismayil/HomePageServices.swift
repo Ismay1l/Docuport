@@ -30,6 +30,7 @@ struct HomePageService: Codable {
     let id, departmentID: Int?
     let displayName, departmentDisplayName, color: String?
     let isMyUploads: Bool? = false
+    var isSelected: Bool?
 
     enum CodingKeys: String, CodingKey {
         case listIcon, gridIcon, id

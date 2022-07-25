@@ -36,7 +36,7 @@ class ProfileVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.updateProfile()
+        self.getProfileInfo()
         self.getProfilePicture()
         
         //        ProfileApi.shared.clientsList { result in
@@ -91,7 +91,7 @@ class ProfileVC: UIViewController {
         self.roleView.hideVerticalView()
         self.extentionView.hideVerticalView()
 
-        getUserProfile()
+//        getUserProfile()
         user = AuthUser()
         
     }
@@ -99,6 +99,10 @@ class ProfileVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         accountNameLbl?.text = UserDefaultsHelper.shared.getClientName()
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(getProfileInfo),
+                                               name: NSNotification.Name("changeAccount"),
+                                               object: nil)
     }
     
     func getUserProfile() {
@@ -201,8 +205,8 @@ extension ProfileVC: SelectAccount {
 }
 
 extension ProfileVC {
-    func updateProfile() {
-        ProfileApi.shared.updateProfile { model in
+    @objc func getProfileInfo() {
+        ProfileApi.shared.getProfileInfo { model in
             print("here: \(model)")
             self.profileModel = model
             self.nameLbl.text = self.profileModel?.firstName

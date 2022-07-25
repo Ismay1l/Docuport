@@ -48,21 +48,21 @@ class ServiceListVC: UIViewController {
                 SVProgressHUD.dismiss()
             })
         } else {
-            AppApi.shared.getAllServices(success: { response in
-                guard let result = response.result else { return }
-                for index in 0..<result.count {
-                    self.arrAllService.append(result[index])
-                    self.arrAllService[index].isSelected = false
-                    
-                    if let _ = self.client?.services?.firstIndex(where: {$0.service?.id == result[index].id}) {
-                        self.arrAllService[index].isSelected = true
-                    }
-                }
-                self.collectionServiceList.reloadData()
-                SVProgressHUD.dismiss()
-            }, failure: {
-                SVProgressHUD.dismiss()
-            })
+//            AppApi.shared.getAllServices(success: { response in
+//                guard let result = response.result else { return }
+//                for index in 0..<result.count {
+//                    self.arrAllService.append(result[index])
+//                    self.arrAllService[index].isSelected = false
+//
+//                    if let _ = self.client?.services?.firstIndex(where: {$0.service?.id == result[index].id}) {
+//                        self.arrAllService[index].isSelected = true
+//                    }
+//                }
+//                self.collectionServiceList.reloadData()
+//                SVProgressHUD.dismiss()
+//            }, failure: {
+//                SVProgressHUD.dismiss()
+//            })
         }
     }
     

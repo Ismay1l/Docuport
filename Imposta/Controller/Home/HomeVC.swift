@@ -34,7 +34,7 @@ class HomeVC: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(documentUpload), name: .documentSaved, object: nil)
         
 
-        setLogout(view: logoutIcon)
+//        setLogout(view: logoutIcon)
         
         if GetUserType.user.isUserClient() {
         accountNameLbl.type = .continuous
@@ -286,7 +286,19 @@ extension HomeVC: UICollectionViewDataSource, UICollectionViewDelegate, UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row == servicesListNew.count-1 {
-            onDocuments(service: servicesListNew[indexPath.row])
+//            onDocuments(service: servicesListNew[indexPath.row])
+            if let VC = R.storyboard.main.documentsVC() {
+                
+                VC.isUploadsCell = true
+                
+                
+                if let navController = self.navigationController {
+                    navController.pushViewController(VC, animated: true)
+                } else {
+                    VC.modalPresentationStyle = .fullScreen
+                    self.present(VC, animated: true)
+                }
+            }
         } else {
             onTags(index: indexPath.row)
         }

@@ -23,7 +23,7 @@ class SwitchUserCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
-    func reloadCell(user: ResultClients) {
+    func reloadCell(user: AccountOnHeaderElement) {
         if UserDefaultsHelper.shared.getClientID() == user.id {
             lblUser.textColor = UIColor(hexStr: "44BA8B", colorAlpha: 1)
         } else {
@@ -31,12 +31,12 @@ class SwitchUserCell: UITableViewCell {
         }
         
         switch user.clientType {
-        case ClientType.Business.rawValue:
+        case 1:
             lblUser.text = user.name
-            imgUser.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "business"))
-        case ClientType.Personal.rawValue:
-            lblUser.text = user.fullClientName
-            imgUser.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "personal"))
+//            imgUser.sd_setImage(with: URL(string: user. ?? ""), placeholderImage: UIImage(named: "business"))
+        case 2:
+            lblUser.text = user.name
+//            imgUser.sd_setImage(with: URL(string: user.profileImageUrl ?? ""), placeholderImage: UIImage(named: "personal"))
         default:
             break
         }

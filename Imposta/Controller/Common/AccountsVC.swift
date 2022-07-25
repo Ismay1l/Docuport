@@ -59,6 +59,7 @@ extension AccountsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         guard let userId = arrUserNew[indexPath.item].id else { return }
         UserDefaultsHelper.shared.setClientID(id: userId)
         

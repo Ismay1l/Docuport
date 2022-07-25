@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class ClientInfoVC: UIViewController, SBCardPopupContent {
     
@@ -21,7 +22,9 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
     var clientBusiness: ClientInfoUser1?
     var clientPersonal: ClientInfoUser2?
     
+    var id: Int?
     var clientType: Int?
+    var clientServices: ServiceBusiness?
     
     var popupViewController: SBCardPopupViewController?
     let allowsTapToDismissPopupCard = false
@@ -38,13 +41,18 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
         bindModel()
         
         NotificationCenter.default.addObserver(self, selector: #selector(closePopup(notification:)), name: .closePopup, object: nil)
+        
     }
     
     func bindModel() {
         if clientType == 1 {
+            
             clientNameLbl.text = "\(clientBusiness?.name ?? "")"
             clientOwnerLbl.text = clientBusiness?.ownerUser
             clientAddressLbl.text = clientBusiness?.emailAddress
+//            self.clientServicesLbl.text = self.clientServices?.displayName
+            self.id = clientBusiness?.id
+            self.getPic(id: clientBusiness?.id ?? 0)
             
             if clientBusiness?.services?.count ?? 0 > 0 {
                 var clientServices = ""
@@ -59,6 +67,8 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
             clientNameLbl.text = "\(clientPersonal?.firstName ?? "") \(clientPersonal?.lastName ?? "")"
             clientOwnerLbl.text = clientPersonal?.ownerUser
             clientAddressLbl.text = clientPersonal?.emailAddress
+            self.id = clientPersonal?.id
+            self.getPic(id: clientPersonal?.id ?? 0)
             
             if clientPersonal?.services?.count ?? 0 > 0 {
                 var clientServices = ""
@@ -68,15 +78,17 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
                 }
                 clientServicesLbl.text = clientServices
             }
+            
+            if clientPersonal?.hasProfilePicture ?? false {
+//                clientPhotoIV.showProfilePic(url: )
+                clientPhotoIV.contentMode = .scaleAspectFill
+            }
 //            print("nameQQQ: \(client?.name)")
         }
 //        clientNameLbl.text = client?.name ?? ""
         
 //        guard let profileImg = client?.profileImageUrl else { return }
-//        if client?.hasProfilePicture ?? false {
-//            clientPhotoIV.showProfilePic(url: profileImg)
-//            clientPhotoIV.contentMode = .scaleAspectFill
-//        }
+       
     }
     
     @objc func closePopup(notification: NSNotification) {
@@ -93,6 +105,23 @@ class ClientInfoVC: UIViewController, SBCardPopupContent {
         } else if clientType == 2 {
             editClientPersonal = clientPersonal
         }
+//        let vc = ClientInfoEditVC()
+        UserDefaults.standard.set(self.clientType, forKey: "clientType")
+        UserDefaults.standard.set(self.id, forKey: "editId")
         presentNavFullScreen1(id: "clientEditNVC")
+    }
+    
+}
+
+extension ClientInfoVC {
+    func getPic(id: Int) {
+        SVProgressHUD.show()
+        ClientApi.shared.getClientPicByIDBusiness(id: id) { data in
+            self.clientPhotoIV.image = UIImage.init(data: data)
+            SVProgressHUD.dismiss()
+        } failure: { string in
+            print(string)
+        }
+
     }
 }

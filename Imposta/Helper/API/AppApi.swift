@@ -221,21 +221,21 @@ extension AppApi {
         }
     }
     
-    func getAllServices(success: @escaping(ServiceAll)->Void, failure: @escaping()->Void) {
-        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/services/all",
-            method: .get,
-            headers: Header.shared.headerWithToken()).responseData { response in
-                guard let data = response.data else { return }
-                
-                do {
-                    let serviceAll = try JSONDecoder().decode(ServiceAll.self, from: data)
-                    success(serviceAll)
-                } catch let err {
-                    print("error: \(err)")
-                    failure()
-                }
-        }
-    }
+//    func getAllServices(success: @escaping(ServiceAll)->Void, failure: @escaping()->Void) {
+//        AF.request("\(ApiRequirements.apiUrl.rawValue)/api/services/all",
+//            method: .get,
+//            headers: Header.shared.headerWithToken()).responseData { response in
+//                guard let data = response.data else { return }
+//
+//                do {
+//                    let serviceAll = try JSONDecoder().decode(ServiceAll.self, from: data)
+//                    success(serviceAll)
+//                } catch let err {
+//                    print("error: \(err)")
+//                    failure()
+//                }
+//        }
+//    }
     
     func getAllServicesNew(success: @escaping([HomePageService])->Void, failure: @escaping()->Void) {
         AF.request("\(ApiRequirements.apiUrl.rawValue)/api/v1/document/services/all?includeIcons=true",

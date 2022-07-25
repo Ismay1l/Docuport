@@ -26,7 +26,8 @@ class ClientTVCell: UITableViewCell {
     
     func setup(client: Item) {
         print("phoneNumWWW: \(client.phoneNumber ?? "") \(client.fullName)")
-        if client.clientType == Int(ClientType.Personal.rawValue) {
+        print("clientTypeYYY: \(client.clientType)")
+        if client.clientType == 2 {
             photoIV.image = R.image.personalAccount()
             clientNameLbl.text = client.fullName
         } else {
